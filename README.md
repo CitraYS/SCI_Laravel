@@ -12,3 +12,5 @@ perubahan 0
 test
 
 tambah teks readme
+
+ini indra ubah duluan
