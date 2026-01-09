@@ -10,3 +10,5 @@ ini dibuat oleh citra
 perubahan 1
 perubahan 0
 test
+
+tambah teks readme
