@@ -45,7 +45,7 @@
                 Skenario Studi Kasus
             </h3>
             <p class="text-gray-600">
-                Kita memiliki tabel <span class="font-bold text-indigo-600 bg-indigo-50 px-1 rounded">students</span> (siswa) dan tabel baru <span class="font-bold text-purple-600 bg-purple-50 px-1 rounded">classrooms</span> (kelas). Kita akan menghubungkan keduanya agar tahu siswa A masuk di kelas mana.
+                Kita memiliki tabel <span class="font-bold text-indigo-600 bg-indigo-50 px-1 rounded">students</span> (siswa) dan tabel <span class="font-bold text-purple-600 bg-purple-50 px-1 rounded">classrooms</span> (kelas). Kita akan menghubungkan keduanya agar tahu siswa A masuk di kelas mana.
             </p>
         </div>
     </section>
@@ -81,48 +81,94 @@
                             <i data-lucide="copy" class="w-4 h-4"></i>
                         </button>
                     </div>
-                    <div class="bg-purple-50 p-2 rounded text-xs text-purple-800 mt-2">
-                        <strong>Logika:</strong> Buat tabel 'students' dengan kolom id (otomatis urut), nama (wajib isi), email (tidak boleh kembar), dan nilai (default 0).
-                    </div>
                 </div>
 
-                <!-- DROP -->
-                <div>
-                    <p class="font-semibold text-sm mb-1 text-red-600">B. Menghapus Tabel (DROP)</p>
-                    <div class="bg-gray-900 rounded-lg p-4 relative group">
-                        <code class="sql-code text-red-300 text-sm block">
-                            DROP TABLE students;
+                <!-- ALTER (NEW) -->
+                <div class="pt-4 border-t border-gray-200">
+                    <p class="font-semibold text-sm mb-3 text-yellow-700">C. Modifikasi Tabel (ALTER) <span class="text-xs font-normal text-gray-500 ml-2">- Sering dipakai saat revisi aplikasi</span></p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-900 rounded-lg p-4 relative group">
+                            <span class="text-xs text-gray-400 block mb-1 font-mono">// Menambah kolom baru</span>
+                            <code class="sql-code text-yellow-300 text-sm block">
+                                ALTER TABLE students <br>
+                                ADD COLUMN classroom_id BIGINT;
+                            </code>
+                            <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- 1. CREATE (INSERT) & DATASET -->
+        <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+            <div class="bg-green-50 p-4 border-b border-green-100 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-green-700 flex items-center gap-2">
+                    <i data-lucide="plus-circle" class="w-6 h-6"></i>
+                    1. INSERT & DATASET CONTOH
+                </h2>
+                <span class="text-xs font-semibold bg-green-200 text-green-800 px-2 py-1 rounded">Create</span>
+            </div>
+            <div class="p-6">
+                
+                <!-- Single Insert -->
+                <div class="mb-6">
+                    <p class="font-semibold text-sm mb-1 text-gray-700">A. Insert Satu Data</p>
+                    <div class="bg-gray-900 rounded-lg p-3 relative group">
+                        <code class="sql-code text-green-300 text-sm block">
+                            INSERT INTO students (name, email, score, classroom_id) <br>
+                            VALUES ('Budi Santoso', 'budi@smk.id', 85, 1);
                         </code>
                         <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
                             <i data-lucide="copy" class="w-4 h-4"></i>
                         </button>
                     </div>
-                    <p class="text-xs text-red-500 mt-1 font-bold">⚠️ Hati-hati: Perintah ini akan menghapus tabel beserta SEMUA data di dalamnya secara permanen.</p>
                 </div>
-            </div>
-        </article>
 
-        <!-- 1. CREATE (INSERT) -->
-        <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
-            <div class="bg-green-50 p-4 border-b border-green-100 flex justify-between items-center">
-                <h2 class="text-xl font-bold text-green-700 flex items-center gap-2">
-                    <i data-lucide="plus-circle" class="w-6 h-6"></i>
-                    1. INSERT (Menambah Data)
-                </h2>
-                <span class="text-xs font-semibold bg-green-200 text-green-800 px-2 py-1 rounded">Create</span>
-            </div>
-            <div class="p-6">
-                <p class="mb-4 text-gray-600">Digunakan untuk memasukkan data baru ke dalam tabel.</p>
+                <!-- Bulk Insert -->
+                <div class="mb-6">
+                    <p class="font-semibold text-sm mb-1 text-gray-700">B. Insert Banyak Data Sekaligus (Bulk)</p>
+                    <p class="text-xs text-gray-500 mb-2">Salin kode ini untuk membuat 10 data dummy sekaligus di database latihanmu.</p>
+                    <div class="bg-gray-900 rounded-lg p-3 relative group">
+                        <code class="sql-code text-green-300 text-xs block whitespace-pre">INSERT INTO students (name, email, score, classroom_id) VALUES
+('Budi Santoso', 'budi@smk.id', 85, 1),
+('Siti Aminah', 'siti@smk.id', 92, 1),
+('Andi Pratama', 'andi@smk.id', 75, 2),
+('Dewi Lestari', 'dewi@smk.id', 88, 2),
+('Eko Purnomo', 'eko@smk.id', 60, 1),
+('Fani Rahma', 'fani@smk.id', 95, 3),
+('Gina Amelia', 'gina@smk.id', 82, 2),
+('Hadi Kusuma', 'hadi@smk.id', 70, 3),
+('Indra Wijaya', 'indra@smk.id', 90, 1),
+('Joko Susilo', 'joko@smk.id', 65, 2);</code>
+                        <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
                 
-                <div class="bg-gray-900 rounded-lg p-4 mb-4 relative group">
-                    <p class="text-gray-400 text-xs mb-1">SQL Query:</p>
-                    <code class="sql-code text-green-400 text-sm block">
-                        INSERT INTO students (name, email, score) <br>
-                        VALUES ('Budi Santoso', 'budi@smk.id', 85);
-                    </code>
-                    <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
-                        <i data-lucide="copy" class="w-4 h-4"></i>
-                    </button>
+                <!-- DATASET TABLE -->
+                <div class="overflow-x-auto border border-gray-200 rounded-lg">
+                    <div class="bg-gray-50 px-3 py-1 border-b text-xs font-bold text-gray-500 uppercase">Dataset Hasil Insert</div>
+                    <table class="min-w-full text-sm text-left">
+                        <thead class="bg-gray-100 text-gray-600">
+                            <tr>
+                                <th class="px-4 py-2">id</th>
+                                <th class="px-4 py-2">name</th>
+                                <th class="px-4 py-2">score</th>
+                                <th class="px-4 py-2">classroom_id</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 bg-white">
+                            <tr><td class="px-4 py-1">1</td><td class="px-4 py-1">Budi Santoso</td><td class="px-4 py-1 font-bold text-green-600">85</td><td class="px-4 py-1">1</td></tr>
+                            <tr><td class="px-4 py-1">2</td><td class="px-4 py-1">Siti Aminah</td><td class="px-4 py-1 font-bold text-green-600">92</td><td class="px-4 py-1">1</td></tr>
+                            <tr><td class="px-4 py-1">3</td><td class="px-4 py-1">Andi Pratama</td><td class="px-4 py-1 font-bold text-yellow-600">75</td><td class="px-4 py-1">2</td></tr>
+                            <tr><td class="px-4 py-1">...</td><td class="px-4 py-1">...</td><td class="px-4 py-1">...</td><td class="px-4 py-1">...</td></tr>
+                            <tr><td class="px-4 py-1">10</td><td class="px-4 py-1">Joko Susilo</td><td class="px-4 py-1 font-bold text-red-600">65</td><td class="px-4 py-1">2</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </article>
@@ -132,19 +178,193 @@
             <div class="bg-blue-50 p-4 border-b border-blue-100 flex justify-between items-center">
                 <h2 class="text-xl font-bold text-blue-700 flex items-center gap-2">
                     <i data-lucide="eye" class="w-6 h-6"></i>
-                    2. SELECT (Melihat Data & Filter)
+                    2. SELECT (Studi Kasus Hasil)
                 </h2>
                 <span class="text-xs font-semibold bg-blue-200 text-blue-800 px-2 py-1 rounded">Read</span>
             </div>
             <div class="p-6">
-                <p class="mb-4 text-gray-600">Digunakan untuk mengambil data. Kekuatan utamanya ada di <b>WHERE</b> (Filter).</p>
                 
-                <!-- A. Basic Select -->
-                <div class="mb-6 border-b border-gray-100 pb-4">
-                    <p class="font-semibold text-sm mb-1">A. Ambil Semua Data</p>
-                    <div class="bg-gray-900 rounded-lg p-3 relative group">
+                <!-- CHEAT SHEET / REFERENCE (UPDATED with Aggregation) -->
+                <div class="mb-8 bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-bold text-gray-700 mb-3 flex items-center gap-2">
+                        <i data-lucide="list" class="w-4 h-4"></i> Cheat Sheet Syntax
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Column 1 -->
+                        <div>
+                            <p class="text-xs font-bold text-indigo-600 uppercase mb-2">Operator Pembanding</p>
+                            <ul class="text-sm space-y-1 text-gray-600">
+                                <li><code class="bg-white px-1 border rounded text-xs">=</code> : Sama dengan</li>
+                                <li><code class="bg-white px-1 border rounded text-xs">!=</code> : Tidak sama dengan</li>
+                                <li><code class="bg-white px-1 border rounded text-xs">></code> : Lebih besar</li>
+                                <li><code class="bg-white px-1 border rounded text-xs"><</code> : Lebih kecil</li>
+                                <li><code class="bg-white px-1 border rounded text-xs">>=</code> : Lebih besar sama</li>
+                                <li><code class="bg-white px-1 border rounded text-xs"><=</code> : Lebih kecil sama</li>
+                            </ul>
+                        </div>
+                        <!-- Column 2 -->
+                        <div>
+                            <p class="text-xs font-bold text-indigo-600 uppercase mb-2">Operator Logika</p>
+                            <ul class="text-sm space-y-1 text-gray-600">
+                                <li><code class="bg-white px-1 border rounded text-xs">AND</code> : Syarat harus benar semua</li>
+                                <li><code class="bg-white px-1 border rounded text-xs">OR</code> : Salah satu syarat benar</li>
+                                <li><code class="bg-white px-1 border rounded text-xs">NOT</code> : Kebalikan (Negasi)</li>
+                                <li><code class="bg-white px-1 border rounded text-xs">IN</code> : Mencocokkan list</li>
+                                <li><code class="bg-white px-1 border rounded text-xs">LIKE</code> : Pencarian teks</li>
+                                <li><code class="bg-white px-1 border rounded text-xs">BETWEEN</code> : Rentang nilai</li>
+                            </ul>
+                        </div>
+                        <!-- Column 3 (NEW) -->
+                        <div>
+                            <p class="text-xs font-bold text-indigo-600 uppercase mb-2">Fungsi Agregasi</p>
+                            <ul class="text-sm space-y-1 text-gray-600">
+                                <li><code class="bg-white px-1 border rounded text-xs">COUNT()</code> : Hitung baris data</li>
+                                <li><code class="bg-white px-1 border rounded text-xs">SUM()</code> : Total penjumlahan</li>
+                                <li><code class="bg-white px-1 border rounded text-xs">AVG()</code> : Nilai rata-rata</li>
+                                <li><code class="bg-white px-1 border rounded text-xs">MAX()</code> : Nilai tertinggi</li>
+                                <li><code class="bg-white px-1 border rounded text-xs">MIN()</code> : Nilai terendah</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- A. Comparison Operators Case Study -->
+                <div class="mb-8 border-b border-gray-100 pb-8">
+                    <p class="font-semibold text-sm mb-2 text-indigo-700">A. Contoh Kasus: Filter Nilai (WHERE > 80)</p>
+                    <p class="text-sm text-gray-600 mb-2">Tampilkan siswa yang nilainya di atas 80.</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-3 relative group mb-3">
                         <code class="sql-code text-blue-300 text-sm block">
-                            SELECT * FROM students;
+                            SELECT name, score FROM students WHERE score > 80;
+                        </code>
+                        <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+
+                    <!-- Result Preview -->
+                    <div class="bg-white border border-gray-200 rounded-lg overflow-hidden w-full md:w-2/3">
+                        <div class="bg-gray-50 px-3 py-1 border-b border-gray-200 text-xs font-bold text-gray-500 uppercase">Hasil Query</div>
+                        <table class="min-w-full text-sm text-left">
+                            <thead class="bg-gray-100 text-gray-600"><tr><th class="px-3 py-1">name</th><th class="px-3 py-1">score</th></tr></thead>
+                            <tbody class="text-gray-700">
+                                <tr><td class="px-3 py-1">Budi Santoso</td><td class="px-3 py-1 font-bold">85</td></tr>
+                                <tr><td class="px-3 py-1">Siti Aminah</td><td class="px-3 py-1 font-bold">92</td></tr>
+                                <tr><td class="px-3 py-1">Dewi Lestari</td><td class="px-3 py-1 font-bold">88</td></tr>
+                                <tr><td class="px-3 py-1">Fani Rahma</td><td class="px-3 py-1 font-bold">95</td></tr>
+                                <tr><td class="px-3 py-1">Gina Amelia</td><td class="px-3 py-1 font-bold">82</td></tr>
+                                <tr><td class="px-3 py-1">Indra Wijaya</td><td class="px-3 py-1 font-bold">90</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- B. Logical Operators Case Study -->
+                <div class="mb-8 border-b border-gray-100 pb-8">
+                    <p class="font-semibold text-sm mb-2 text-indigo-700">B. Contoh Kasus: Filter Kombinasi (AND)</p>
+                    <p class="text-sm text-gray-600 mb-2">Tampilkan siswa Kelas 1 (ID=1) YANG nilainya kurang dari 70.</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-3 relative group mb-3">
+                        <code class="sql-code text-blue-300 text-sm block">
+                            SELECT name, score, classroom_id FROM students <br>
+                            WHERE classroom_id = 1 AND score < 70;
+                        </code>
+                        <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+
+                    <!-- Result Preview -->
+                    <div class="bg-white border border-gray-200 rounded-lg overflow-hidden w-full md:w-2/3">
+                        <div class="bg-gray-50 px-3 py-1 border-b border-gray-200 text-xs font-bold text-gray-500 uppercase">Hasil Query</div>
+                        <table class="min-w-full text-sm text-left">
+                            <thead class="bg-gray-100 text-gray-600"><tr><th class="px-3 py-1">name</th><th class="px-3 py-1">score</th><th class="px-3 py-1">classroom_id</th></tr></thead>
+                            <tbody class="text-gray-700">
+                                <tr class="bg-red-50"><td class="px-3 py-1">Eko Purnomo</td><td class="px-3 py-1 font-bold text-red-600">60</td><td class="px-3 py-1">1</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- D. Aggregate Functions -->
+                <div class="mb-8 border-b border-gray-100 pb-8">
+                    <p class="font-semibold text-sm mb-2 text-indigo-700">C. Hitung-hitungan (Aggregation)</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        <!-- COUNT -->
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">Total Siswa:</p>
+                            <div class="bg-gray-900 rounded-lg p-2 mb-2">
+                                <code class="sql-code text-green-300 text-xs">SELECT COUNT(*) FROM students;</code>
+                            </div>
+                            <div class="inline-block px-3 py-1 bg-green-100 text-green-800 rounded font-bold text-sm">
+                                Result: 10
+                            </div>
+                        </div>
+
+                        <!-- AVG -->
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">Rata-rata Nilai:</p>
+                            <div class="bg-gray-900 rounded-lg p-2 mb-2">
+                                <code class="sql-code text-green-300 text-xs">SELECT AVG(score) FROM students;</code>
+                            </div>
+                            <div class="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded font-bold text-sm">
+                                Result: 80.2
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- E. Grouping -->
+                <div class="mb-4">
+                    <p class="font-semibold text-sm mb-2 text-indigo-700">D. Pengelompokan (GROUP BY)</p>
+                    <p class="text-sm text-gray-600 mb-2">Hitung jumlah siswa di setiap kelas.</p>
+                    
+                    <div class="bg-gray-900 rounded-lg p-3 relative group mb-3">
+                        <code class="sql-code text-pink-300 text-sm block">
+                            SELECT classroom_id, COUNT(*) as total_siswa<br>
+                            FROM students<br>
+                            GROUP BY classroom_id;
+                        </code>
+                        <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+
+                    <!-- Result Preview -->
+                    <div class="bg-white border border-gray-200 rounded-lg overflow-hidden w-full md:w-1/2">
+                        <div class="bg-gray-50 px-3 py-1 border-b border-gray-200 text-xs font-bold text-gray-500 uppercase">Hasil Query</div>
+                        <table class="min-w-full text-sm text-left">
+                            <thead class="bg-gray-100 text-gray-600"><tr><th class="px-3 py-1">classroom_id</th><th class="px-3 py-1">total_siswa</th></tr></thead>
+                            <tbody class="text-gray-700">
+                                <tr><td class="px-3 py-1">1</td><td class="px-3 py-1 font-bold">4</td></tr>
+                                <tr><td class="px-3 py-1">2</td><td class="px-3 py-1 font-bold">4</td></tr>
+                                <tr><td class="px-3 py-1">3</td><td class="px-3 py-1 font-bold">2</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </article>
+
+        <!-- 3. UPDATE & DELETE -->
+        <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+            <div class="bg-orange-50 p-4 border-b border-orange-100 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-orange-700 flex items-center gap-2">
+                    <i data-lucide="edit-3" class="w-6 h-6"></i>
+                    3. UPDATE & DELETE
+                </h2>
+                <span class="text-xs font-semibold bg-orange-200 text-orange-800 px-2 py-1 rounded">Modify</span>
+            </div>
+            <div class="p-6">
+                <!-- Update Case -->
+                <div class="mb-6">
+                    <p class="font-semibold text-sm mb-1 text-gray-700">A. Revisi Nilai (UPDATE)</p>
+                    <p class="text-xs text-gray-500 mb-2">Misal: Eko (ID=5) remedial dan nilainya naik jadi 75.</p>
+                    <div class="bg-gray-900 rounded-lg p-3 relative group">
+                        <code class="sql-code text-orange-300 text-sm block">
+                            UPDATE students SET score = 75 WHERE id = 5;
                         </code>
                         <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
                             <i data-lucide="copy" class="w-4 h-4"></i>
@@ -152,140 +372,28 @@
                     </div>
                 </div>
 
-                <!-- B. Comparison Operators -->
-                <div class="mb-6 border-b border-gray-100 pb-4">
-                    <p class="font-semibold text-sm mb-2 text-indigo-700">B. Operator Pembanding (Comparison)</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-xs font-bold text-gray-500 block mb-1">Sama Dengan (=)</span>
-                            <code class="text-sm text-gray-800 font-mono">WHERE id = 1</code>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-xs font-bold text-gray-500 block mb-1">Lebih Besar/Kecil (>, <, >=, <=)</span>
-                            <code class="text-sm text-gray-800 font-mono">WHERE score >= 75</code>
-                        </div>
-                        <div class="bg-gray-50 p-3 rounded border border-gray-200">
-                            <span class="text-xs font-bold text-gray-500 block mb-1">Tidak Sama Dengan (!= atau <>)</span>
-                            <code class="text-sm text-gray-800 font-mono">WHERE classroom_id != 2</code>
-                        </div>
+                <!-- Delete Case -->
+                <div>
+                    <p class="font-semibold text-sm mb-1 text-gray-700">B. Hapus Siswa (DELETE)</p>
+                    <p class="text-xs text-gray-500 mb-2">Misal: Joko (ID=10) pindah sekolah.</p>
+                    <div class="bg-gray-900 rounded-lg p-3 relative group">
+                        <code class="sql-code text-red-300 text-sm block">
+                            DELETE FROM students WHERE id = 10;
+                        </code>
+                        <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
                     </div>
-                </div>
-
-                <!-- C. Logical Operators -->
-                <div class="mb-6 border-b border-gray-100 pb-4">
-                    <p class="font-semibold text-sm mb-2 text-indigo-700">C. Operator Logika (AND, OR, LIKE, IN)</p>
-                    
-                    <!-- Example 1: AND -->
-                    <div class="mb-4">
-                        <p class="text-xs text-gray-500 mb-1">1. <b>AND</b> (Kedua syarat harus benar)</p>
-                        <div class="bg-gray-900 rounded-lg p-3 relative group">
-                            <code class="sql-code text-blue-300 text-sm block">
-                                SELECT * FROM students <br>
-                                WHERE score >= 75 AND classroom_id = 1;
-                            </code>
-                            <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
-                                <i data-lucide="copy" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Example 2: OR -->
-                    <div class="mb-4">
-                        <p class="text-xs text-gray-500 mb-1">2. <b>OR</b> (Salah satu syarat benar)</p>
-                        <div class="bg-gray-900 rounded-lg p-3 relative group">
-                            <code class="sql-code text-blue-300 text-sm block">
-                                SELECT * FROM students <br>
-                                WHERE classroom_id = 1 OR classroom_id = 2;
-                            </code>
-                            <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
-                                <i data-lucide="copy" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Example 3: IN -->
-                    <div class="mb-4">
-                        <p class="text-xs text-gray-500 mb-1">3. <b>IN</b> (Alternatif OR yang lebih rapi)</p>
-                        <div class="bg-gray-900 rounded-lg p-3 relative group">
-                            <code class="sql-code text-blue-300 text-sm block">
-                                SELECT * FROM students <br>
-                                WHERE classroom_id IN (1, 2, 3);
-                            </code>
-                            <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
-                                <i data-lucide="copy" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Example 4: LIKE (Search) -->
-                    <div class="mb-3">
-                        <p class="text-xs text-gray-500 mb-1">4. <b>LIKE</b> (Pencarian Teks / Search)</p>
-                        <div class="bg-gray-900 rounded-lg p-3 relative group">
-                            <code class="sql-code text-yellow-300 text-sm block">
-                                SELECT * FROM students <br>
-                                WHERE name LIKE '%Budi%';
-                            </code>
-                            <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
-                                <i data-lucide="copy" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-                        <p class="text-xs text-gray-400 mt-1"><i>% artinya "wildcard". <code>%Budi%</code> berarti mencari yang namanya mengandung kata "Budi" di posisi manapun.</i></p>
-                    </div>
-                </div>
-
-                <div class="bg-blue-50 p-3 rounded text-sm text-blue-800 border border-blue-100">
-                    <strong>Di Laravel nanti:</strong> <br>
-                    <code class="bg-blue-200 px-1 rounded">Student::where('score', '>=', 75)->where('classroom_id', 1)->get();</code> (AND)<br>
-                    <code class="bg-blue-200 px-1 rounded">Student::whereIn('classroom_id', [1, 2])->get();</code> (IN)<br>
-                    <code class="bg-blue-200 px-1 rounded">Student::where('name', 'like', '%Budi%')->get();</code> (Search)
                 </div>
             </div>
         </article>
 
-        <!-- 3. UPDATE -->
-        <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
-            <div class="bg-orange-50 p-4 border-b border-orange-100 flex justify-between items-center">
-                <h2 class="text-xl font-bold text-orange-700 flex items-center gap-2">
-                    <i data-lucide="edit-3" class="w-6 h-6"></i>
-                    3. UPDATE (Mengubah Data)
-                </h2>
-                <span class="text-xs font-semibold bg-orange-200 text-orange-800 px-2 py-1 rounded">Update</span>
-            </div>
-            <div class="p-6">
-                <div class="bg-gray-900 rounded-lg p-4 mb-4 relative group">
-                    <code class="sql-code text-orange-300 text-sm block">
-                        UPDATE students <br>
-                        SET score = 90 <br>
-                        WHERE id = 1;
-                    </code>
-                </div>
-            </div>
-        </article>
-
-        <!-- 4. DELETE -->
-        <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
-            <div class="bg-red-50 p-4 border-b border-red-100 flex justify-between items-center">
-                <h2 class="text-xl font-bold text-red-700 flex items-center gap-2">
-                    <i data-lucide="trash-2" class="w-6 h-6"></i>
-                    4. DELETE (Menghapus Data)
-                </h2>
-                <span class="text-xs font-semibold bg-red-200 text-red-800 px-2 py-1 rounded">Delete</span>
-            </div>
-            <div class="p-6">
-                <div class="bg-gray-900 rounded-lg p-4 mb-4 relative group">
-                    <code class="sql-code text-red-300 text-sm block">
-                        DELETE FROM students WHERE id = 1;
-                    </code>
-                </div>
-            </div>
-        </article>
-
-        <!-- 5. DATABASE RELATIONSHIP -->
+        <!-- 4. DATABASE RELATIONSHIP (RESTORED) -->
         <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 ring-2 ring-indigo-500 ring-offset-2">
             <div class="bg-indigo-600 p-4 text-white flex justify-between items-center">
                 <h2 class="text-xl font-bold flex items-center gap-2">
                     <i data-lucide="link" class="w-6 h-6"></i>
-                    5. Ilustrasi Relasi Tabel (One-to-Many)
+                    4. Ilustrasi Relasi (One-to-Many)
                 </h2>
                 <span class="text-xs font-semibold bg-indigo-500 text-white border border-indigo-400 px-2 py-1 rounded">Relationship</span>
             </div>
@@ -309,11 +417,11 @@
                                 <div>name</div>
                             </div>
                             <div class="p-2 grid grid-cols-2 border-b border-gray-100 bg-yellow-50">
-                                <div class="font-bold text-yellow-700">101</div>
+                                <div class="font-bold text-yellow-700">1</div>
                                 <div>X-RPL 1</div>
                             </div>
                             <div class="p-2 grid grid-cols-2 text-gray-400">
-                                <div>102</div>
+                                <div>2</div>
                                 <div>X-TKJ 2</div>
                             </div>
                         </div>
@@ -334,17 +442,17 @@
                             <div class="bg-indigo-100 p-2 font-mono font-bold text-indigo-900 border-b border-indigo-200 grid grid-cols-3">
                                 <div>id</div>
                                 <div>name</div>
-                                <div class="text-yellow-700">classroom_id (FK)</div>
+                                <div class="text-yellow-700">classroom_id</div>
                             </div>
                             <div class="p-2 grid grid-cols-3 border-b border-gray-100">
                                 <div>1</div>
                                 <div>Budi</div>
-                                <div class="font-bold text-yellow-700 bg-yellow-50 rounded text-center">101</div>
+                                <div class="font-bold text-yellow-700 bg-yellow-50 rounded text-center">1</div>
                             </div>
                             <div class="p-2 grid grid-cols-3 border-b border-gray-100">
                                 <div>2</div>
                                 <div>Siti</div>
-                                <div class="font-bold text-yellow-700 bg-yellow-50 rounded text-center">101</div>
+                                <div class="font-bold text-yellow-700 bg-yellow-50 rounded text-center">1</div>
                             </div>
                         </div>
                     </div>
@@ -352,84 +460,104 @@
 
                 <!-- QUERY EXPLANATION -->
                 <div class="space-y-4">
-                    <h4 class="font-bold text-gray-800">Cara Membuat Relasi dengan Query:</h4>
-                    
-                    <!-- Step 1 -->
-                    <div>
-                        <p class="text-sm text-gray-600 mb-1">1. Tambahkan kolom penampung ID (Foreign Key) di tabel Students:</p>
-                        <div class="bg-gray-900 rounded-lg p-3 relative group">
-                            <code class="sql-code text-indigo-300 text-sm block">
-                                ALTER TABLE students <br>
-                                ADD COLUMN classroom_id BIGINT;
-                            </code>
-                            <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
-                                <i data-lucide="copy" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Step 2 -->
-                    <div>
-                        <p class="text-sm text-gray-600 mb-1">2. Sambungkan kolom tersebut ke tabel Classrooms:</p>
-                        <div class="bg-gray-900 rounded-lg p-3 relative group">
-                            <code class="sql-code text-pink-300 text-sm block">
-                                ALTER TABLE students <br>
-                                ADD FOREIGN KEY (classroom_id) REFERENCES classrooms(id);
-                            </code>
-                            <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
-                                <i data-lucide="copy" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="bg-indigo-50 p-3 rounded text-sm text-indigo-800 mt-4 border border-indigo-100">
-                        <strong>💡 Logika:</strong> "Kolom <code>classroom_id</code> milik Students harus merujuk pada <code>id</code> milik Classrooms."
+                    <h4 class="font-bold text-gray-800">Cara Menghubungkan (Foreign Key):</h4>
+                    <div class="bg-gray-900 rounded-lg p-3 relative group">
+                        <code class="sql-code text-pink-300 text-sm block">
+                            ALTER TABLE students <br>
+                            ADD FOREIGN KEY (classroom_id) REFERENCES classrooms(id);
+                        </code>
+                        <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
                     </div>
                 </div>
             </div>
         </article>
 
-        <!-- 6. JOIN (READ RELATION) -->
+        <!-- 5. JOINS (RESTORED) -->
         <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
             <div class="bg-purple-50 p-4 border-b border-purple-100 flex justify-between items-center">
                 <h2 class="text-xl font-bold text-purple-700 flex items-center gap-2">
                     <i data-lucide="network" class="w-6 h-6"></i>
-                    6. JOIN (Mengambil Data Relasi)
+                    5. JOIN (Menggabungkan Data)
                 </h2>
-                <span class="text-xs font-semibold bg-purple-200 text-purple-800 px-2 py-1 rounded">Read Join</span>
+                <span class="text-xs font-semibold bg-purple-200 text-purple-800 px-2 py-1 rounded">Inner vs Left</span>
             </div>
             <div class="p-6">
-                <p class="mb-4 text-gray-600">Bagaimana cara menampilkan <b>Nama Siswa</b> beserta <b>Nama Kelasnya</b> sekaligus? Jika kita hanya melakukan SELECT biasa, kita hanya melihat ID kelas saja. Gunakan <b>JOIN</b> untuk menggabungkannya.</p>
+                <p class="mb-4 text-gray-600">Bagaimana cara menampilkan <b>Nama Siswa</b> beserta <b>Nama Kelasnya</b>? Ada 2 cara paling umum yang hasilnya berbeda jika datanya tidak lengkap.</p>
                 
-                <div class="bg-gray-900 rounded-lg p-4 mb-4 relative group">
-                    <p class="text-gray-400 text-xs mb-1">SQL Query:</p>
-                    <code class="sql-code text-purple-300 text-sm block">
-                        SELECT students.name, classrooms.name AS class_name <br>
-                        FROM students <br>
-                        JOIN classrooms ON students.classroom_id = classrooms.id;
-                    </code>
-                    <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
-                        <i data-lucide="copy" class="w-4 h-4"></i>
-                    </button>
+                <!-- A. INNER JOIN -->
+                <div class="mb-8">
+                    <p class="font-bold text-sm mb-2 text-indigo-700 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-indigo-500"></span> A. INNER JOIN (Standar)
+                    </p>
+                    <div class="bg-gray-900 rounded-lg p-4 mb-2 relative group">
+                        <code class="sql-code text-purple-300 text-sm block">
+                            SELECT students.name, classrooms.name AS class_name <br>
+                            FROM students <br>
+                            JOIN classrooms ON students.classroom_id = classrooms.id;
+                        </code>
+                        <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-500 italic">Hanya menampilkan data yang <b>punya pasangan lengkap</b>. Siswa tanpa kelas TIDAK akan muncul.</p>
                 </div>
 
-                <div class="bg-purple-50 p-3 rounded text-sm text-purple-800 mt-2 border border-purple-100">
-                    <strong>Cara bacanya:</strong> "Ambil nama siswa dan nama kelas (beri nama lain 'class_name'), dari tabel siswa, gabungkan dengan tabel kelas dimana ID kelas di tabel siswa SAMA DENGAN ID asli kelas."
-                </div>
+                <!-- B. LEFT JOIN with Visual Table -->
+                <div class="mb-4">
+                    <p class="font-bold text-sm mb-2 text-pink-700 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-pink-500"></span> B. LEFT JOIN (Tampilkan Semua Kiri)
+                    </p>
+                    <div class="bg-gray-900 rounded-lg p-4 mb-4 relative group">
+                        <code class="sql-code text-pink-300 text-sm block">
+                            SELECT students.name, classrooms.name AS class_name <br>
+                            FROM students <br>
+                            LEFT JOIN classrooms ON students.classroom_id = classrooms.id;
+                        </code>
+                        <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                    </div>
 
-                <div class="bg-blue-50 p-3 rounded text-sm text-blue-800 mt-4">
-                    <strong>Di Laravel nanti:</strong> Jauh lebih mudah! Cukup panggil relasinya: <br>
-                    <code class="bg-blue-200 px-1 rounded font-mono font-bold">$student->classroom->name;</code>
+                    <!-- Visual Comparison Table -->
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h4 class="font-bold text-xs text-gray-500 uppercase tracking-wide mb-3">Perbandingan Hasil:</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            
+                            <!-- Case Inner Join -->
+                            <div class="bg-white p-3 rounded shadow-sm border border-indigo-100">
+                                <p class="text-center font-bold text-indigo-600 mb-2 border-b pb-1">Hasil INNER JOIN</p>
+                                <p class="text-xs text-gray-500 mb-2 text-center">(Hanya siswa yg punya kelas)</p>
+                                <table class="w-full text-left text-xs">
+                                    <tr class="bg-gray-100 text-gray-600"><th class="p-1">name</th><th class="p-1">class_name</th></tr>
+                                    <tr class="border-b"><td class="p-1">Budi</td><td class="p-1">X-RPL 1</td></tr>
+                                </table>
+                            </div>
+
+                            <!-- Case Left Join -->
+                            <div class="bg-white p-3 rounded shadow-sm border border-pink-100">
+                                <p class="text-center font-bold text-pink-600 mb-2 border-b pb-1">Hasil LEFT JOIN</p>
+                                <p class="text-xs text-gray-500 mb-2 text-center">(Semua siswa muncul, meski tanpa kelas)</p>
+                                <table class="w-full text-left text-xs">
+                                    <tr class="bg-gray-100 text-gray-600"><th class="p-1">name</th><th class="p-1">class_name</th></tr>
+                                    <tr class="border-b"><td class="p-1">Budi</td><td class="p-1">X-RPL 1</td></tr>
+                                    <tr class="bg-pink-50"><td class="p-1 font-bold">Anak Baru</td><td class="p-1 italic text-gray-400">NULL</td></tr>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </article>
 
-        <!-- 7. MULTI JOIN (New Section) -->
+        <!-- 6. MULTI JOIN (RESTORED) -->
         <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
             <div class="bg-pink-50 p-4 border-b border-pink-100 flex justify-between items-center">
                 <h2 class="text-xl font-bold text-pink-700 flex items-center gap-2">
                     <i data-lucide="git-merge" class="w-6 h-6"></i>
-                    7. MULTI JOIN (Gabungan 3 Tabel)
+                    6. MULTI JOIN (Gabungan 3 Tabel)
                 </h2>
                 <span class="text-xs font-semibold bg-pink-200 text-pink-800 px-2 py-1 rounded">Complex Read</span>
             </div>
@@ -458,11 +586,6 @@
                     <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
                         <i data-lucide="copy" class="w-4 h-4"></i>
                     </button>
-                </div>
-
-                <div class="bg-blue-50 p-3 rounded text-sm text-blue-800 mt-4">
-                    <strong>Di Laravel nanti:</strong> Kamu cukup menyambung panahnya (Chaining): <br>
-                    <code class="bg-blue-200 px-1 rounded font-mono font-bold">$student->classroom->teacher->name;</code>
                 </div>
             </div>
         </article>
