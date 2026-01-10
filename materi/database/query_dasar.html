@@ -132,17 +132,112 @@
             <div class="bg-blue-50 p-4 border-b border-blue-100 flex justify-between items-center">
                 <h2 class="text-xl font-bold text-blue-700 flex items-center gap-2">
                     <i data-lucide="eye" class="w-6 h-6"></i>
-                    2. SELECT (Melihat Data)
+                    2. SELECT (Melihat Data & Filter)
                 </h2>
                 <span class="text-xs font-semibold bg-blue-200 text-blue-800 px-2 py-1 rounded">Read</span>
             </div>
             <div class="p-6">
-                <p class="mb-4 text-gray-600">Digunakan untuk mengambil data. Kita bisa ambil semua atau filter tertentu.</p>
+                <p class="mb-4 text-gray-600">Digunakan untuk mengambil data. Kekuatan utamanya ada di <b>WHERE</b> (Filter).</p>
                 
-                <div class="bg-gray-900 rounded-lg p-4 relative group">
-                    <code class="sql-code text-blue-300 text-sm block">
-                        SELECT * FROM students WHERE score > 80;
-                    </code>
+                <!-- A. Basic Select -->
+                <div class="mb-6 border-b border-gray-100 pb-4">
+                    <p class="font-semibold text-sm mb-1">A. Ambil Semua Data</p>
+                    <div class="bg-gray-900 rounded-lg p-3 relative group">
+                        <code class="sql-code text-blue-300 text-sm block">
+                            SELECT * FROM students;
+                        </code>
+                        <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- B. Comparison Operators -->
+                <div class="mb-6 border-b border-gray-100 pb-4">
+                    <p class="font-semibold text-sm mb-2 text-indigo-700">B. Operator Pembanding (Comparison)</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-xs font-bold text-gray-500 block mb-1">Sama Dengan (=)</span>
+                            <code class="text-sm text-gray-800 font-mono">WHERE id = 1</code>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-xs font-bold text-gray-500 block mb-1">Lebih Besar/Kecil (>, <, >=, <=)</span>
+                            <code class="text-sm text-gray-800 font-mono">WHERE score >= 75</code>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                            <span class="text-xs font-bold text-gray-500 block mb-1">Tidak Sama Dengan (!= atau <>)</span>
+                            <code class="text-sm text-gray-800 font-mono">WHERE classroom_id != 2</code>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- C. Logical Operators -->
+                <div class="mb-6 border-b border-gray-100 pb-4">
+                    <p class="font-semibold text-sm mb-2 text-indigo-700">C. Operator Logika (AND, OR, LIKE, IN)</p>
+                    
+                    <!-- Example 1: AND -->
+                    <div class="mb-4">
+                        <p class="text-xs text-gray-500 mb-1">1. <b>AND</b> (Kedua syarat harus benar)</p>
+                        <div class="bg-gray-900 rounded-lg p-3 relative group">
+                            <code class="sql-code text-blue-300 text-sm block">
+                                SELECT * FROM students <br>
+                                WHERE score >= 75 AND classroom_id = 1;
+                            </code>
+                            <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Example 2: OR -->
+                    <div class="mb-4">
+                        <p class="text-xs text-gray-500 mb-1">2. <b>OR</b> (Salah satu syarat benar)</p>
+                        <div class="bg-gray-900 rounded-lg p-3 relative group">
+                            <code class="sql-code text-blue-300 text-sm block">
+                                SELECT * FROM students <br>
+                                WHERE classroom_id = 1 OR classroom_id = 2;
+                            </code>
+                            <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Example 3: IN -->
+                    <div class="mb-4">
+                        <p class="text-xs text-gray-500 mb-1">3. <b>IN</b> (Alternatif OR yang lebih rapi)</p>
+                        <div class="bg-gray-900 rounded-lg p-3 relative group">
+                            <code class="sql-code text-blue-300 text-sm block">
+                                SELECT * FROM students <br>
+                                WHERE classroom_id IN (1, 2, 3);
+                            </code>
+                            <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Example 4: LIKE (Search) -->
+                    <div class="mb-3">
+                        <p class="text-xs text-gray-500 mb-1">4. <b>LIKE</b> (Pencarian Teks / Search)</p>
+                        <div class="bg-gray-900 rounded-lg p-3 relative group">
+                            <code class="sql-code text-yellow-300 text-sm block">
+                                SELECT * FROM students <br>
+                                WHERE name LIKE '%Budi%';
+                            </code>
+                            <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1"><i>% artinya "wildcard". <code>%Budi%</code> berarti mencari yang namanya mengandung kata "Budi" di posisi manapun.</i></p>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 p-3 rounded text-sm text-blue-800 border border-blue-100">
+                    <strong>Di Laravel nanti:</strong> <br>
+                    <code class="bg-blue-200 px-1 rounded">Student::where('score', '>=', 75)->where('classroom_id', 1)->get();</code> (AND)<br>
+                    <code class="bg-blue-200 px-1 rounded">Student::whereIn('classroom_id', [1, 2])->get();</code> (IN)<br>
+                    <code class="bg-blue-200 px-1 rounded">Student::where('name', 'like', '%Budi%')->get();</code> (Search)
                 </div>
             </div>
         </article>
