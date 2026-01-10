@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan SQL Dasar & Relasi</title>
+    <!-- Tailwind CSS untuk styling instan yang modern -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .sql-code { font-family: 'Consolas', 'Monaco', monospace; }
+        .card { transition: all 0.3s ease; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        /* Garis penghubung untuk ilustrasi relasi */
+        .connector-line {
+            position: absolute;
+            z-index: 10;
+            border-left: 2px dashed #6366f1;
+            border-bottom: 2px dashed #6366f1;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="text-gray-800 pb-20">
+
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white py-12 px-4 shadow-lg">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-4xl font-bold mb-2">Basic SQL & Relationships</h1>
+            <p class="text-indigo-100 text-lg">Panduan Perintah Database & Relasi untuk Calon Developer Laravel</p>
+        </div>
+    </header>
+
+    <!-- Context Section -->
+    <section class="max-w-4xl mx-auto mt-8 px-4">
+        <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-yellow-400">
+            <h3 class="font-bold text-lg flex items-center gap-2 mb-2">
+                <i data-lucide="database" class="w-5 h-5 text-yellow-500"></i>
+                Skenario Studi Kasus
+            </h3>
+            <p class="text-gray-600">
+                Kita memiliki tabel <span class="font-bold text-indigo-600 bg-indigo-50 px-1 rounded">students</span> (siswa) dan tabel baru <span class="font-bold text-purple-600 bg-purple-50 px-1 rounded">classrooms</span> (kelas). Kita akan menghubungkan keduanya agar tahu siswa A masuk di kelas mana.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-4xl mx-auto mt-8 px-4 grid gap-8">
+
+        <!-- 0. TABLE LEVEL (NEW) -->
+        <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+            <div class="bg-gray-700 p-4 border-b border-gray-600 flex justify-between items-center text-white">
+                <h2 class="text-xl font-bold flex items-center gap-2">
+                    <i data-lucide="box" class="w-6 h-6"></i>
+                    0. TABLE OPERATIONS (Kelola Wadah)
+                </h2>
+                <span class="text-xs font-semibold bg-gray-600 text-gray-200 px-2 py-1 rounded">DDL</span>
+            </div>
+            <div class="p-6">
+                <p class="mb-4 text-gray-600">Sebelum mengisi data, kita harus membuat wadahnya (Tabel) terlebih dahulu. Ini yang dilakukan Laravel Migration di belakang layar.</p>
+
+                <!-- CREATE -->
+                <div class="mb-6">
+                    <p class="font-semibold text-sm mb-1 text-gray-700">A. Membuat Tabel Baru (CREATE)</p>
+                    <div class="bg-gray-900 rounded-lg p-4 relative group">
+                        <code class="sql-code text-purple-300 text-sm block">
+                            CREATE TABLE students (
+                                id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                name VARCHAR(255) NOT NULL,
+                                email VARCHAR(255) UNIQUE,
+                                score INT DEFAULT 0
+                            );
+                        </code>
+                        <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <div class="bg-purple-50 p-2 rounded text-xs text-purple-800 mt-2">
+                        <strong>Logika:</strong> Buat tabel 'students' dengan kolom id (otomatis urut), nama (wajib isi), email (tidak boleh kembar), dan nilai (default 0).
+                    </div>
+                </div>
+
+                <!-- DROP -->
+                <div>
+                    <p class="font-semibold text-sm mb-1 text-red-600">B. Menghapus Tabel (DROP)</p>
+                    <div class="bg-gray-900 rounded-lg p-4 relative group">
+                        <code class="sql-code text-red-300 text-sm block">
+                            DROP TABLE students;
+                        </code>
+                        <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs text-red-500 mt-1 font-bold">⚠️ Hati-hati: Perintah ini akan menghapus tabel beserta SEMUA data di dalamnya secara permanen.</p>
+                </div>
+            </div>
+        </article>
+
+        <!-- 1. CREATE (INSERT) -->
+        <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+            <div class="bg-green-50 p-4 border-b border-green-100 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-green-700 flex items-center gap-2">
+                    <i data-lucide="plus-circle" class="w-6 h-6"></i>
+                    1. INSERT (Menambah Data)
+                </h2>
+                <span class="text-xs font-semibold bg-green-200 text-green-800 px-2 py-1 rounded">Create</span>
+            </div>
+            <div class="p-6">
+                <p class="mb-4 text-gray-600">Digunakan untuk memasukkan data baru ke dalam tabel.</p>
+                
+                <div class="bg-gray-900 rounded-lg p-4 mb-4 relative group">
+                    <p class="text-gray-400 text-xs mb-1">SQL Query:</p>
+                    <code class="sql-code text-green-400 text-sm block">
+                        INSERT INTO students (name, email, score) <br>
+                        VALUES ('Budi Santoso', 'budi@smk.id', 85);
+                    </code>
+                    <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </article>
+
+        <!-- 2. READ (SELECT) -->
+        <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+            <div class="bg-blue-50 p-4 border-b border-blue-100 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-blue-700 flex items-center gap-2">
+                    <i data-lucide="eye" class="w-6 h-6"></i>
+                    2. SELECT (Melihat Data)
+                </h2>
+                <span class="text-xs font-semibold bg-blue-200 text-blue-800 px-2 py-1 rounded">Read</span>
+            </div>
+            <div class="p-6">
+                <p class="mb-4 text-gray-600">Digunakan untuk mengambil data. Kita bisa ambil semua atau filter tertentu.</p>
+                
+                <div class="bg-gray-900 rounded-lg p-4 relative group">
+                    <code class="sql-code text-blue-300 text-sm block">
+                        SELECT * FROM students WHERE score > 80;
+                    </code>
+                </div>
+            </div>
+        </article>
+
+        <!-- 3. UPDATE -->
+        <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+            <div class="bg-orange-50 p-4 border-b border-orange-100 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-orange-700 flex items-center gap-2">
+                    <i data-lucide="edit-3" class="w-6 h-6"></i>
+                    3. UPDATE (Mengubah Data)
+                </h2>
+                <span class="text-xs font-semibold bg-orange-200 text-orange-800 px-2 py-1 rounded">Update</span>
+            </div>
+            <div class="p-6">
+                <div class="bg-gray-900 rounded-lg p-4 mb-4 relative group">
+                    <code class="sql-code text-orange-300 text-sm block">
+                        UPDATE students <br>
+                        SET score = 90 <br>
+                        WHERE id = 1;
+                    </code>
+                </div>
+            </div>
+        </article>
+
+        <!-- 4. DELETE -->
+        <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+            <div class="bg-red-50 p-4 border-b border-red-100 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-red-700 flex items-center gap-2">
+                    <i data-lucide="trash-2" class="w-6 h-6"></i>
+                    4. DELETE (Menghapus Data)
+                </h2>
+                <span class="text-xs font-semibold bg-red-200 text-red-800 px-2 py-1 rounded">Delete</span>
+            </div>
+            <div class="p-6">
+                <div class="bg-gray-900 rounded-lg p-4 mb-4 relative group">
+                    <code class="sql-code text-red-300 text-sm block">
+                        DELETE FROM students WHERE id = 1;
+                    </code>
+                </div>
+            </div>
+        </article>
+
+        <!-- 5. DATABASE RELATIONSHIP (NEW SECTION) -->
+        <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 ring-2 ring-indigo-500 ring-offset-2">
+            <div class="bg-indigo-600 p-4 text-white flex justify-between items-center">
+                <h2 class="text-xl font-bold flex items-center gap-2">
+                    <i data-lucide="link" class="w-6 h-6"></i>
+                    5. Ilustrasi Relasi Tabel (One-to-Many)
+                </h2>
+                <span class="text-xs font-semibold bg-indigo-500 text-white border border-indigo-400 px-2 py-1 rounded">Relationship</span>
+            </div>
+            
+            <div class="p-6">
+                <p class="mb-6 text-gray-600">
+                    Konsep: Satu Kelas (<code class="bg-gray-100 px-1 text-purple-600 font-bold">Parent</code>) bisa memiliki Banyak Siswa (<code class="bg-gray-100 px-1 text-indigo-600 font-bold">Child</code>). Kita menghubungkannya menggunakan <b>Foreign Key</b>.
+                </p>
+
+                <!-- VISUAL ILLUSTRATION -->
+                <div class="flex flex-col md:flex-row gap-8 items-center justify-center mb-8 relative p-4 bg-gray-50 rounded-xl border border-dashed border-gray-300">
+                    
+                    <!-- Table A: Classrooms -->
+                    <div class="w-full md:w-5/12">
+                        <div class="text-center mb-2 font-bold text-purple-700 flex items-center justify-center gap-2">
+                            <i data-lucide="table" class="w-4 h-4"></i> Tabel: classrooms
+                        </div>
+                        <div class="bg-white border border-purple-200 rounded-lg shadow-sm overflow-hidden text-sm">
+                            <div class="bg-purple-100 p-2 font-mono font-bold text-purple-900 border-b border-purple-200 grid grid-cols-2">
+                                <div>id (PK)</div>
+                                <div>name</div>
+                            </div>
+                            <div class="p-2 grid grid-cols-2 border-b border-gray-100 bg-yellow-50">
+                                <div class="font-bold text-yellow-700">101</div>
+                                <div>X-RPL 1</div>
+                            </div>
+                            <div class="p-2 grid grid-cols-2 text-gray-400">
+                                <div>102</div>
+                                <div>X-TKJ 2</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Connector Arrow (Visual Only) -->
+                    <div class="hidden md:flex flex-col items-center justify-center text-gray-400">
+                        <i data-lucide="arrow-right" class="w-6 h-6"></i>
+                        <span class="text-xs">Disambung ke</span>
+                    </div>
+
+                    <!-- Table B: Students -->
+                    <div class="w-full md:w-6/12">
+                        <div class="text-center mb-2 font-bold text-indigo-700 flex items-center justify-center gap-2">
+                            <i data-lucide="table" class="w-4 h-4"></i> Tabel: students
+                        </div>
+                        <div class="bg-white border border-indigo-200 rounded-lg shadow-sm overflow-hidden text-sm">
+                            <div class="bg-indigo-100 p-2 font-mono font-bold text-indigo-900 border-b border-indigo-200 grid grid-cols-3">
+                                <div>id</div>
+                                <div>name</div>
+                                <div class="text-yellow-700">classroom_id (FK)</div>
+                            </div>
+                            <div class="p-2 grid grid-cols-3 border-b border-gray-100">
+                                <div>1</div>
+                                <div>Budi</div>
+                                <div class="font-bold text-yellow-700 bg-yellow-50 rounded text-center">101</div>
+                            </div>
+                            <div class="p-2 grid grid-cols-3 border-b border-gray-100">
+                                <div>2</div>
+                                <div>Siti</div>
+                                <div class="font-bold text-yellow-700 bg-yellow-50 rounded text-center">101</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUERY EXPLANATION -->
+                <div class="space-y-4">
+                    <h4 class="font-bold text-gray-800">Cara Membuat Relasi dengan Query:</h4>
+                    
+                    <!-- Step 1 -->
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">1. Tambahkan kolom penampung ID (Foreign Key) di tabel Students:</p>
+                        <div class="bg-gray-900 rounded-lg p-3 relative group">
+                            <code class="sql-code text-indigo-300 text-sm block">
+                                ALTER TABLE students <br>
+                                ADD COLUMN classroom_id BIGINT;
+                            </code>
+                            <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">2. Sambungkan kolom tersebut ke tabel Classrooms:</p>
+                        <div class="bg-gray-900 rounded-lg p-3 relative group">
+                            <code class="sql-code text-pink-300 text-sm block">
+                                ALTER TABLE students <br>
+                                ADD FOREIGN KEY (classroom_id) REFERENCES classrooms(id);
+                            </code>
+                            <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-indigo-50 p-3 rounded text-sm text-indigo-800 mt-4 border border-indigo-100">
+                        <strong>💡 Logika:</strong> "Kolom <code>classroom_id</code> milik Students harus merujuk pada <code>id</code> milik Classrooms."
+                    </div>
+                </div>
+            </div>
+        </article>
+
+    </main>
+
+    <footer class="text-center mt-12 text-gray-500 text-sm">
+        <p>Created for Laravel Class Learning Material</p>
+    </footer>
+
+    <!-- Script untuk Icon dan Copy -->
+    <script>
+        // Inisialisasi Icon Lucide
+        lucide.createIcons();
+
+        // Fungsi Copy
+        function copyToClipboard(button) {
+            const codeBlock = button.parentElement.querySelector('code');
+            const text = codeBlock.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalIcon = button.innerHTML;
+                button.innerHTML = '<i data-lucide="check" class="w-4 h-4 text-green-400"></i>';
+                lucide.createIcons();
+                
+                setTimeout(() => {
+                    button.innerHTML = originalIcon;
+                    lucide.createIcons();
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
