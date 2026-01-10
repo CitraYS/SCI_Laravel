@@ -53,7 +53,7 @@
     <!-- Main Content Grid -->
     <main class="max-w-4xl mx-auto mt-8 px-4 grid gap-8">
 
-        <!-- 0. TABLE LEVEL (NEW) -->
+        <!-- 0. TABLE LEVEL -->
         <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
             <div class="bg-gray-700 p-4 border-b border-gray-600 flex justify-between items-center text-white">
                 <h2 class="text-xl font-bold flex items-center gap-2">
@@ -185,7 +185,7 @@
             </div>
         </article>
 
-        <!-- 5. DATABASE RELATIONSHIP (NEW SECTION) -->
+        <!-- 5. DATABASE RELATIONSHIP -->
         <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 ring-2 ring-indigo-500 ring-offset-2">
             <div class="bg-indigo-600 p-4 text-white flex justify-between items-center">
                 <h2 class="text-xl font-bold flex items-center gap-2">
@@ -290,6 +290,84 @@
                     <div class="bg-indigo-50 p-3 rounded text-sm text-indigo-800 mt-4 border border-indigo-100">
                         <strong>💡 Logika:</strong> "Kolom <code>classroom_id</code> milik Students harus merujuk pada <code>id</code> milik Classrooms."
                     </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- 6. JOIN (READ RELATION) -->
+        <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+            <div class="bg-purple-50 p-4 border-b border-purple-100 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-purple-700 flex items-center gap-2">
+                    <i data-lucide="network" class="w-6 h-6"></i>
+                    6. JOIN (Mengambil Data Relasi)
+                </h2>
+                <span class="text-xs font-semibold bg-purple-200 text-purple-800 px-2 py-1 rounded">Read Join</span>
+            </div>
+            <div class="p-6">
+                <p class="mb-4 text-gray-600">Bagaimana cara menampilkan <b>Nama Siswa</b> beserta <b>Nama Kelasnya</b> sekaligus? Jika kita hanya melakukan SELECT biasa, kita hanya melihat ID kelas saja. Gunakan <b>JOIN</b> untuk menggabungkannya.</p>
+                
+                <div class="bg-gray-900 rounded-lg p-4 mb-4 relative group">
+                    <p class="text-gray-400 text-xs mb-1">SQL Query:</p>
+                    <code class="sql-code text-purple-300 text-sm block">
+                        SELECT students.name, classrooms.name AS class_name <br>
+                        FROM students <br>
+                        JOIN classrooms ON students.classroom_id = classrooms.id;
+                    </code>
+                    <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <div class="bg-purple-50 p-3 rounded text-sm text-purple-800 mt-2 border border-purple-100">
+                    <strong>Cara bacanya:</strong> "Ambil nama siswa dan nama kelas (beri nama lain 'class_name'), dari tabel siswa, gabungkan dengan tabel kelas dimana ID kelas di tabel siswa SAMA DENGAN ID asli kelas."
+                </div>
+
+                <div class="bg-blue-50 p-3 rounded text-sm text-blue-800 mt-4">
+                    <strong>Di Laravel nanti:</strong> Jauh lebih mudah! Cukup panggil relasinya: <br>
+                    <code class="bg-blue-200 px-1 rounded font-mono font-bold">$student->classroom->name;</code>
+                </div>
+            </div>
+        </article>
+
+        <!-- 7. MULTI JOIN (New Section) -->
+        <article class="card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+            <div class="bg-pink-50 p-4 border-b border-pink-100 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-pink-700 flex items-center gap-2">
+                    <i data-lucide="git-merge" class="w-6 h-6"></i>
+                    7. MULTI JOIN (Gabungan 3 Tabel)
+                </h2>
+                <span class="text-xs font-semibold bg-pink-200 text-pink-800 px-2 py-1 rounded">Complex Read</span>
+            </div>
+            <div class="p-6">
+                <p class="mb-4 text-gray-600">
+                    <b>Tantangan:</b> Bagaimana jika kita ingin melihat Nama Siswa, Nama Kelasnya, DAN <b>Nama Wali Kelasnya</b>?
+                    <br>
+                    <span class="text-sm">Asumsi: Tabel <code>classrooms</code> punya kolom <code>teacher_id</code> yang terhubung ke tabel baru bernama <code>teachers</code>.</span>
+                </p>
+
+                <div class="bg-pink-50 p-3 rounded text-sm text-pink-800 mb-4 border border-pink-100 font-mono text-center">
+                    Students ➜ Classrooms ➜ Teachers
+                </div>
+
+                <div class="bg-gray-900 rounded-lg p-4 mb-4 relative group">
+                    <p class="text-gray-400 text-xs mb-1">SQL Query:</p>
+                    <code class="sql-code text-pink-300 text-sm block">
+                        SELECT <br>
+                        &nbsp;&nbsp;students.name AS siswa,<br>
+                        &nbsp;&nbsp;classrooms.name AS kelas,<br>
+                        &nbsp;&nbsp;teachers.name AS wali_kelas<br>
+                        FROM students<br>
+                        JOIN classrooms ON students.classroom_id = classrooms.id<br>
+                        JOIN teachers ON classrooms.teacher_id = teachers.id;
+                    </code>
+                    <button onclick="copyToClipboard(this)" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition">
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <div class="bg-blue-50 p-3 rounded text-sm text-blue-800 mt-4">
+                    <strong>Di Laravel nanti:</strong> Kamu cukup menyambung panahnya (Chaining): <br>
+                    <code class="bg-blue-200 px-1 rounded font-mono font-bold">$student->classroom->teacher->name;</code>
                 </div>
             </div>
         </article>
