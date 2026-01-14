@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Praktek: Routes & MVC</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .code-block {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        .code-header {
+            background-color: #334155;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            font-family: monospace;
+        }
+        .code-content {
+            padding: 1rem;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.875rem;
+            color: #e2e8f0;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+        .keyword { color: #c084fc; } /* purple */
+        .function { color: #60a5fa; } /* blue */
+        .string { color: #4ade80; } /* green */
+        .comment { color: #64748b; font-style: italic; }
+        .variable { color: #f472b6; } /* pink */
+        .step-badge {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            font-weight: bold;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body class="pb-20">
+
+    <!-- Header -->
+    <header class="py-12 px-4 border-b border-slate-800 bg-slate-900 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
+        <div class="max-w-4xl mx-auto relative z-10 text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-wider mb-4">
+                <i data-lucide="code-2" class="w-3 h-3"></i> Hands-on Lab
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3 tracking-tight">Implementasi Routes & MVC</h1>
+            <p class="text-slate-400 text-lg">Misi: Membuat Halaman "Profil Saya" yang dinamis menggunakan Controller.</p>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto mt-8 px-4">
+
+        <!-- Illustration Bar -->
+        <section class="mb-12 bg-slate-800/50 border border-slate-700 rounded-xl p-6 relative">
+            <h3 class="text-sm font-bold text-slate-400 uppercase mb-6 text-center">Alur Data yang Akan Kita Buat</h3>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left relative z-10">
+                
+                <!-- Route -->
+                <div class="flex-1 bg-slate-900 p-4 rounded-lg border border-slate-700 w-full">
+                    <div class="flex items-center gap-2 mb-2 text-yellow-400">
+                        <i data-lucide="map" class="w-5 h-5"></i>
+                        <span class="font-bold">1. Route</span>
+                    </div>
+                    <p class="text-xs text-slate-500">Menerima URL <code class="bg-slate-800 px-1 text-slate-300">/profil</code></p>
+                </div>
+
+                <div class="hidden md:block text-slate-600"><i data-lucide="arrow-right" class="w-6 h-6"></i></div>
+                <div class="md:hidden text-slate-600"><i data-lucide="arrow-down" class="w-6 h-6"></i></div>
+
+                <!-- Controller -->
+                <div class="flex-1 bg-slate-900 p-4 rounded-lg border border-blue-900/50 w-full relative overflow-hidden">
+                    <div class="absolute inset-0 bg-blue-500/5"></div>
+                    <div class="flex items-center gap-2 mb-2 text-blue-400 relative z-10">
+                        <i data-lucide="cpu" class="w-5 h-5"></i>
+                        <span class="font-bold">2. Controller</span>
+                    </div>
+                    <p class="text-xs text-slate-500 relative z-10">Menyiapkan Data (Nama, Hobi)</p>
+                </div>
+
+                <div class="hidden md:block text-slate-600"><i data-lucide="arrow-right" class="w-6 h-6"></i></div>
+                <div class="md:hidden text-slate-600"><i data-lucide="arrow-down" class="w-6 h-6"></i></div>
+
+                <!-- View -->
+                <div class="flex-1 bg-slate-900 p-4 rounded-lg border border-slate-700 w-full">
+                    <div class="flex items-center gap-2 mb-2 text-pink-400">
+                        <i data-lucide="layout" class="w-5 h-5"></i>
+                        <span class="font-bold">3. View</span>
+                    </div>
+                    <p class="text-xs text-slate-500">Menampilkan HTML ke Layar</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 1: Make Controller -->
+        <section class="mb-16 relative">
+            <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-slate-800 -z-10 md:left-8"></div>
+            
+            <div class="flex gap-6">
+                <div class="flex-shrink-0 w-8 h-8 md:w-16 md:h-16 rounded-full bg-slate-900 border-4 border-slate-800 flex items-center justify-center font-bold text-blue-500 text-lg md:text-2xl z-10">1</div>
+                <div class="flex-1 pb-10">
+                    <h2 class="text-xl md:text-2xl font-bold mb-2 text-blue-400">Buat Controller (Otak)</h2>
+                    <p class="text-slate-400 mb-4">Kita butuh "Pelayan" untuk mengatur logika. Gunakan terminal untuk membuatnya secara otomatis.</p>
+                    
+                    <div class="code-block shadow-lg shadow-blue-900/10">
+                        <div class="code-header">
+                            <span>TERMINAL (VS Code)</span>
+                            <span class="text-xs px-2 py-0.5 rounded bg-slate-700">bash</span>
+                        </div>
+                        <div class="code-content">
+                            <span class="text-green-400">user@laptop:~/project$</span> php artisan make:controller <span class="text-yellow-400">ProfileController</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start gap-2 text-sm text-slate-500 bg-slate-800/50 p-3 rounded border border-slate-700/50">
+                        <i data-lucide="check-circle" class="w-4 h-4 text-green-500 mt-0.5"></i>
+                        <span>Sukses jika muncul file baru di: <code class="text-slate-300">app/Http/Controllers/ProfileController.php</code></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 2: Edit Controller -->
+        <section class="mb-16 relative">
+            <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-slate-800 -z-10 md:left-8"></div>
+
+            <div class="flex gap-6">
+                <div class="flex-shrink-0 w-8 h-8 md:w-16 md:h-16 rounded-full bg-slate-900 border-4 border-slate-800 flex items-center justify-center font-bold text-blue-500 text-lg md:text-2xl z-10">2</div>
+                <div class="flex-1 pb-10">
+                    <h2 class="text-xl md:text-2xl font-bold mb-2 text-blue-400">Isi Logika Controller</h2>
+                    <p class="text-slate-400 mb-4">Buka file controller yang baru dibuat. Kita akan membuat fungsi <code>index</code> untuk mengirim data nama kita ke View.</p>
+                    
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>FILE: app/Http/Controllers/ProfileController.php</span>
+                            <i data-lucide="file-code" class="w-4 h-4"></i>
+                        </div>
+                        <div class="code-content">
+<span class="keyword">class</span> ProfileController <span class="keyword">extends</span> Controller
+{
+    <span class="keyword">public function</span> <span class="function">index</span>()
+    {
+        <span class="comment">// 1. Siapkan data (Biasanya dari Database)</span>
+        <span class="variable">$nama_saya</span> = <span class="string">"Budi Santoso"</span>;
+        <span class="variable">$hobi</span> = <span class="string">"Coding Laravel"</span>;
+
+        <span class="comment">// 2. Kirim data ke View 'profile'</span>
+        <span class="comment">// Kita pakai array asosiatif ['key' => $value]</span>
+        <span class="keyword">return</span> view(<span class="string">'profile'</span>, [
+            <span class="string">'nama'</span> => <span class="variable">$nama_saya</span>,
+            <span class="string">'hobi'</span> => <span class="variable">$hobi</span>
+        ]);
+    }
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 3: Create View -->
+        <section class="mb-16 relative">
+            <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-slate-800 -z-10 md:left-8"></div>
+
+            <div class="flex gap-6">
+                <div class="flex-shrink-0 w-8 h-8 md:w-16 md:h-16 rounded-full bg-slate-900 border-4 border-slate-800 flex items-center justify-center font-bold text-pink-500 text-lg md:text-2xl z-10">3</div>
+                <div class="flex-1 pb-10">
+                    <h2 class="text-xl md:text-2xl font-bold mb-2 text-pink-400">Buat View (Wajah)</h2>
+                    <p class="text-slate-400 mb-4">Buat file baru di folder <code class="text-slate-300">resources/views</code> dengan nama <code class="text-yellow-400">profile.blade.php</code>.</p>
+                    
+                    <div class="code-block border-pink-900/30">
+                        <div class="code-header text-pink-300">
+                            <span>FILE: resources/views/profile.blade.php</span>
+                            <i data-lucide="layout" class="w-4 h-4"></i>
+                        </div>
+                        <div class="code-content">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Halaman Profil&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    
+    &lt;h1&gt;Halo, Nama Saya <span class="variable">{{ $nama }}</span>&lt;/h1&gt;
+    &lt;p&gt;Hobi saya adalah: &lt;b&gt;<span class="variable">{{ $hobi }}</span>&lt;/b&gt;&lt;/p&gt;
+
+    &lt;hr&gt;
+    &lt;small&gt;Dibuat dengan Laravel & MVC&lt;/small&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+                        </div>
+                    </div>
+                    
+                    <div class="bg-yellow-900/20 p-3 rounded border border-yellow-700/30 text-sm text-yellow-200/80">
+                        <span class="font-bold text-yellow-400">Perhatikan:</span> Kita menggunakan kurung kurawal ganda <code>{{ }}</code> untuk mencetak variabel dari Controller. Ini adalah fitur <b>Blade Template</b>.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 4: Register Route -->
+        <section class="mb-16 relative">
+            <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-slate-800 -z-10 md:left-8"></div>
+
+            <div class="flex gap-6">
+                <div class="flex-shrink-0 w-8 h-8 md:w-16 md:h-16 rounded-full bg-slate-900 border-4 border-slate-800 flex items-center justify-center font-bold text-yellow-500 text-lg md:text-2xl z-10">4</div>
+                <div class="flex-1 pb-10">
+                    <h2 class="text-xl md:text-2xl font-bold mb-2 text-yellow-400">Daftarkan Route (Pintu)</h2>
+                    <p class="text-slate-400 mb-4">Terakhir, kita harus memberitahu Laravel: "Kalau ada yang buka <code>/profil</code>, panggil Controller tadi".</p>
+                    
+                    <div class="code-block border-yellow-900/30">
+                        <div class="code-header text-yellow-300">
+                            <span>FILE: routes/web.php</span>
+                            <i data-lucide="map" class="w-4 h-4"></i>
+                        </div>
+                        <div class="code-content">
+&lt;?php
+
+<span class="keyword">use</span> Illuminate\Support\Facades\Route;
+<span class="comment">// 1. PENTING: Panggil Controller-nya di atas</span>
+<span class="keyword">use</span> App\Http\Controllers\ProfileController; 
+
+<span class="keyword">Route</span>::<span class="function">get</span>(<span class="string">'/'</span>, <span class="keyword">function</span> () {
+    <span class="keyword">return</span> view(<span class="string">'welcome'</span>);
+});
+
+<span class="comment">// 2. Buat jalur baru ke Controller</span>
+<span class="comment">// Format: [NamaClass::class, 'NamaMethod']</span>
+<span class="keyword">Route</span>::<span class="function">get</span>(<span class="string">'/profil'</span>, [ProfileController::<span class="keyword">class</span>, <span class="string">'index'</span>]);
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 5: Result -->
+        <section>
+            <div class="flex gap-6">
+                <div class="flex-shrink-0 w-8 h-8 md:w-16 md:h-16 rounded-full bg-green-500 flex items-center justify-center font-bold text-slate-900 text-lg md:text-2xl shadow-lg shadow-green-500/50 z-10">
+                    <i data-lucide="check" class="w-5 h-5 md:w-8 md:h-8"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 class="text-xl md:text-2xl font-bold mb-2 text-white">Lihat Hasilnya!</h2>
+                    <p class="text-slate-400 mb-6">Pastikan server menyala (<code>php artisan serve</code>), lalu buka browser.</p>
+                    
+                    <!-- Browser Mockup -->
+                    <div class="bg-white rounded-lg overflow-hidden shadow-2xl max-w-2xl">
+                        <div class="bg-slate-200 px-4 py-2 flex items-center gap-3 border-b border-slate-300">
+                            <div class="flex gap-1.5">
+                                <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                            </div>
+                            <div class="bg-white text-slate-500 text-xs px-3 py-1 rounded-md flex-1 text-center font-mono">
+                                http://localhost:8000/profil
+                            </div>
+                        </div>
+                        <div class="p-8 text-slate-800 font-sans min-h-[200px]">
+                            <h1 class="text-3xl font-bold mb-4">Halo, Nama Saya Budi Santoso</h1>
+                            <p class="text-lg">Hobi saya adalah: <b>Coding Laravel</b></p>
+                            <hr class="my-6 border-slate-200">
+                            <small class="text-slate-400">Dibuat dengan Laravel & MVC</small>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 p-4 bg-slate-800 rounded-lg border border-slate-700 flex gap-4">
+                        <i data-lucide="party-popper" class="w-8 h-8 text-yellow-400 flex-shrink-0"></i>
+                        <div>
+                            <h4 class="font-bold text-white mb-1">Selamat!</h4>
+                            <p class="text-sm text-slate-400">Kamu baru saja menerapkan konsep MVC pertama kamu. Data di controller (Budi) berhasil muncul di View tanpa menulis nama "Budi" secara manual di HTML.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-20 text-center text-slate-600 text-sm pb-10">
+        <p>&copy; 2024 Modul Praktikum Laravel</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

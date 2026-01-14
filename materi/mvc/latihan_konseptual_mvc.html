@@ -13,7 +13,7 @@
     
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
-        .answer-key { display: none; }
+        .answer-key { display: box }
         .answer-key.show { display: block; animation: fadeIn 0.5s; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         .card { @apply bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6; }
@@ -228,7 +228,7 @@
                         
                         <div class="flex gap-3">
                             <span class="px-3 py-1 border rounded text-sm text-slate-500">A. Model</span>
-                            <span class="px-3 py-1 border rounded text-sm bg-green-100 border-green-300 text-green-700 font-bold answer-key">B. Route</span>
+                            <span class="px-3 py-1 border rounded text-sm bg-green-100 border-green-300 text-green-700 font-bold">B. Route</span>
                             <span class="px-3 py-1 border rounded text-sm text-slate-500">C. View</span>
                         </div>
                     </div>
