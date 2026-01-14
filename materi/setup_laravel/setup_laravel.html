@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Project Laravel</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .terminal-window {
+            background-color: #1e293b;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            border: 1px solid #334155;
+        }
+        .terminal-header {
+            background-color: #334155;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Changed for shortcut layout */
+        }
+        .window-controls { display: flex; gap: 0.5rem; align-items: center; }
+        .dot { width: 0.75rem; height: 0.75rem; border-radius: 9999px; }
+        .code-content { padding: 1rem; font-family: 'Monaco', 'Consolas', monospace; font-size: 0.9rem; color: #e2e8f0; }
+        .folder-structure { font-family: 'Monaco', 'Consolas', monospace; font-size: 0.85rem; color: #94a3b8; }
+        .step-number {
+            background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .shortcut-badge {
+            font-size: 0.7rem;
+            background-color: #475569;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #cbd5e1;
+            font-family: sans-serif;
+            border: 1px solid #64748b;
+        }
+    </style>
+</head>
+<body class="pb-20">
+
+    <!-- Header -->
+    <header class="py-16 px-4 text-center border-b border-slate-800 bg-slate-900">
+        <div class="max-w-4xl mx-auto">
+            <div class="inline-flex items-center justify-center p-3 bg-red-500/10 border border-red-500/20 rounded-full mb-6">
+                <i data-lucide="box" class="w-8 h-8 text-red-500"></i>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Memulai Project Laravel</h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">Panduan instalasi dan persiapan lingkungan kerja (Environment Setup) dari nol sampai server jalan.</p>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto mt-12 px-4 space-y-16">
+
+        <!-- Step 1: Create Project -->
+        <section class="grid md:grid-cols-12 gap-8 items-start">
+            <div class="md:col-span-5">
+                <h2 class="text-2xl font-bold mb-2 flex items-center gap-3">
+                    <span class="text-4xl font-extrabold step-number">01</span>
+                    <span>Install via Composer</span>
+                </h2>
+                <p class="text-slate-400 mb-4 text-sm leading-relaxed">
+                    Buka VS Code, lalu buka <b>Integrated Terminal</b>. Kita akan mendownload Laravel langsung dari sini.
+                </p>
+                <div class="bg-blue-900/20 border border-blue-800/50 p-4 rounded-lg">
+                    <p class="text-xs text-blue-300 font-bold mb-1 flex items-center gap-2">
+                        <i data-lucide="keyboard" class="w-3 h-3"></i> Tips Shortcut:
+                    </p>
+                    <p class="text-xs text-slate-400">
+                        Tekan <kbd class="bg-slate-700 px-1 rounded border border-slate-600">Ctrl</kbd> + <kbd class="bg-slate-700 px-1 rounded border border-slate-600">`</kbd> (Backtick) atau <kbd class="bg-slate-700 px-1 rounded border border-slate-600">Ctrl</kbd> + <kbd class="bg-slate-700 px-1 rounded border border-slate-600">J</kbd> untuk membuka/tutup terminal dengan cepat.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="md:col-span-7">
+                <!-- Terminal UI -->
+                <div class="terminal-window mb-4">
+                    <div class="terminal-header">
+                        <div class="window-controls">
+                            <div class="dot bg-red-500"></div><div class="dot bg-yellow-500"></div><div class="dot bg-green-500"></div>
+                            <span class="text-xs text-slate-300 ml-2 font-semibold">Terminal (VS Code)</span>
+                        </div>
+                        <span class="shortcut-badge">bash / powershell</span>
+                    </div>
+                    <div class="code-content">
+                        <span class="text-green-400">user@vscode:~/Desktop$</span> composer create-project laravel/laravel <span class="text-yellow-400">toko-online</span>
+                    </div>
+                </div>
+                
+                <!-- File Path Result -->
+                <div class="border border-dashed border-slate-700 rounded-lg p-4 bg-slate-900/50">
+                    <p class="text-xs text-slate-500 uppercase font-bold mb-2 flex items-center gap-2">
+                        <i data-lucide="folder-open" class="w-4 h-4"></i> Hasil di Komputer:
+                    </p>
+                    <div class="folder-structure">
+                        Desktop/<br>
+                        └── <span class="text-yellow-400 font-bold">toko-online/</span> <span class="text-slate-500 text-xs ml-2"><-- Folder baru akan muncul</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-slate-800">
+
+        <!-- Step 2: Change Directory -->
+        <section class="grid md:grid-cols-12 gap-8 items-start">
+            <div class="md:col-span-5">
+                <h2 class="text-2xl font-bold mb-2 flex items-center gap-3">
+                    <span class="text-4xl font-extrabold step-number">02</span>
+                    <span>Masuk ke Folder</span>
+                </h2>
+                <p class="text-slate-400 mb-4 text-sm leading-relaxed">
+                    Setelah download selesai, terminal kita masih berada di "luar" folder project. Kita harus masuk ke dalamnya agar bisa memerintah Laravel.
+                </p>
+                <div class="bg-yellow-900/20 border border-yellow-800/50 p-4 rounded-lg">
+                    <p class="text-xs text-yellow-500 font-bold mb-1 flex items-center gap-2">
+                        <i data-lucide="alert-circle" class="w-3 h-3"></i> Penting:
+                    </p>
+                    <p class="text-xs text-slate-400">
+                        Jika kamu lupa langkah ini, perintah artisan di langkah selanjutnya akan error: <i>"Could not open input file: artisan"</i>.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="md:col-span-7">
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <div class="window-controls">
+                            <div class="dot bg-red-500"></div><div class="dot bg-yellow-500"></div><div class="dot bg-green-500"></div>
+                            <span class="text-xs text-slate-300 ml-2 font-semibold">Terminal (VS Code)</span>
+                        </div>
+                    </div>
+                    <div class="code-content">
+                        <span class="text-green-400">user@vscode:~/Desktop$</span> cd toko-online
+                        <br>
+                        <span class="text-green-400">user@vscode:~/Desktop/toko-online$</span> <span class="text-slate-500 animate-pulse">_</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-slate-800">
+
+        <!-- Step 3: Run Server -->
+        <section class="grid md:grid-cols-12 gap-8 items-start">
+            <div class="md:col-span-5">
+                <h2 class="text-2xl font-bold mb-2 flex items-center gap-3">
+                    <span class="text-4xl font-extrabold step-number">03</span>
+                    <span>Nyalakan Server</span>
+                </h2>
+                <p class="text-slate-400 mb-4 text-sm leading-relaxed">
+                    Laravel punya server lokal bawaan. Kita tidak perlu setting XAMPP ribet-ribet secara manual. Cukup panggil "Artisan".
+                </p>
+                <div class="bg-green-900/20 border border-green-800/50 p-4 rounded-lg">
+                    <p class="text-xs text-green-400 font-bold mb-1 flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-3 h-3"></i> Tips:
+                    </p>
+                    <p class="text-xs text-slate-400">
+                        Jangan tutup terminal ini selama kamu sedang ngoding. Kalau ditutup, website-nya mati.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="md:col-span-7">
+                <div class="terminal-window mb-4">
+                    <div class="terminal-header">
+                        <div class="window-controls">
+                            <div class="dot bg-red-500"></div><div class="dot bg-yellow-500"></div><div class="dot bg-green-500"></div>
+                            <span class="text-xs text-slate-300 ml-2 font-semibold">Terminal (VS Code)</span>
+                        </div>
+                        <span class="shortcut-badge">server running</span>
+                    </div>
+                    <div class="code-content">
+                        <span class="text-green-400">user@vscode:~/.../toko-online$</span> php artisan serve
+                        <br><br>
+                        <span class="text-slate-400">INFO Server running on [http://127.0.0.1:8000].</span><br>
+                        <span class="text-slate-500">Press Ctrl+C to stop the server</span>
+                    </div>
+                </div>
+
+                <!-- Browser Preview -->
+                <div class="bg-white rounded-lg border-4 border-slate-700 overflow-hidden">
+                    <div class="bg-slate-200 p-2 flex items-center gap-2 border-b border-slate-300">
+                        <div class="flex gap-1">
+                            <div class="w-2 h-2 rounded-full bg-red-400"></div>
+                            <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
+                        </div>
+                        <div class="bg-white px-3 py-1 rounded text-[10px] text-slate-500 flex-1 text-center font-mono">
+                            http://localhost:8000
+                        </div>
+                    </div>
+                    <div class="h-32 bg-white flex flex-col items-center justify-center text-slate-800">
+                        <span class="text-2xl font-light mb-1">Laravel</span>
+                        <span class="text-xs text-slate-400">v10.x.x (PHP v8.x)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-slate-800">
+
+        <!-- Step 4: Folder Structure -->
+        <section class="grid md:grid-cols-12 gap-8 items-start">
+            <div class="md:col-span-5">
+                <h2 class="text-2xl font-bold mb-2 flex items-center gap-3">
+                    <span class="text-4xl font-extrabold step-number">04</span>
+                    <span>Cek Folder Project</span>
+                </h2>
+                <p class="text-slate-400 mb-4 text-sm leading-relaxed">
+                    Pastikan kamu membuka folder projectnya (bukan folder luarnya) di VS Code supaya fitur <i>Autosuggestion</i> berjalan lancar.
+                </p>
+                <div class="space-y-3">
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="file-code" class="w-5 h-5 text-yellow-500 mt-1"></i>
+                        <div>
+                            <p class="font-bold text-sm text-slate-200">.env</p>
+                            <p class="text-xs text-slate-500">File rahasia. Tempat setting Database & Password.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="folder" class="w-5 h-5 text-blue-500 mt-1"></i>
+                        <div>
+                            <p class="font-bold text-sm text-slate-200">vendor/</p>
+                            <p class="text-xs text-slate-500">Isi "otak" Laravel yang didownload Composer. Jangan diedit!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="md:col-span-7">
+                <div class="border border-slate-700 rounded-lg p-4 bg-slate-900 font-mono text-sm shadow-xl">
+                    <div class="text-slate-500 text-xs mb-2 border-b border-slate-800 pb-2">VS CODE EXPLORER (SIDEBAR)</div>
+                    <div class="text-yellow-400 mb-2 font-bold flex items-center gap-2"><i data-lucide="chevron-down" class="w-4 h-4"></i> toko-online</div>
+                    <ul class="space-y-1 text-slate-400 pl-4 border-l border-slate-700 ml-1">
+                        <li class="flex items-center gap-2"><i data-lucide="folder" class="w-4 h-4 text-blue-500"></i> app <span class="text-slate-600 text-xs">// Controller & Model disini</span></li>
+                        <li class="flex items-center gap-2"><i data-lucide="folder" class="w-4 h-4 text-blue-500"></i> bootstrap</li>
+                        <li class="flex items-center gap-2"><i data-lucide="folder" class="w-4 h-4 text-blue-500"></i> config</li>
+                        <li class="flex items-center gap-2"><i data-lucide="folder" class="w-4 h-4 text-blue-500"></i> database</li>
+                        <li class="flex items-center gap-2"><i data-lucide="folder" class="w-4 h-4 text-blue-500"></i> public <span class="text-slate-600 text-xs">// CSS/Gambar disini</span></li>
+                        <li class="flex items-center gap-2"><i data-lucide="folder" class="w-4 h-4 text-blue-500"></i> resources <span class="text-slate-600 text-xs">// View (HTML) disini</span></li>
+                        <li class="flex items-center gap-2"><i data-lucide="folder" class="w-4 h-4 text-blue-500"></i> routes <span class="text-slate-600 text-xs">// Web.php disini</span></li>
+                        <li class="flex items-center gap-2 opacity-50"><i data-lucide="folder" class="w-4 h-4"></i> storage</li>
+                        <li class="flex items-center gap-2 opacity-50"><i data-lucide="folder" class="w-4 h-4"></i> tests</li>
+                        <li class="flex items-center gap-2"><i data-lucide="folder" class="w-4 h-4 text-red-500"></i> vendor</li>
+                        <li class="flex items-center gap-2 mt-2"><i data-lucide="file-cog" class="w-4 h-4 text-yellow-500"></i> .env</li>
+                        <li class="flex items-center gap-2"><i data-lucide="terminal" class="w-4 h-4 text-green-500"></i> artisan</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-20 text-center text-slate-500 text-sm pb-10">
+        <p>Materi Praktikum Laravel - Sesi Instalasi</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
