@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anatomi Struktur Laravel</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #e2e8f0; scroll-behavior: smooth; }
+        .nav-link { @apply block px-4 py-2 hover:bg-slate-800 rounded transition text-sm font-semibold; }
+        
+        /* Code Anatomy Grid Layout */
+        .anatomy-container { 
+            background-color: #1e293b; 
+            border: 1px solid #334155; 
+            border-radius: 0.5rem; 
+            overflow: hidden; 
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        
+        .code-row {
+            display: grid;
+            grid-template-columns: 3rem 1fr; /* Kolom 1: No Baris, Kolom 2: Kode */
+            border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+        }
+        
+        .code-row:last-child { border-bottom: none; }
+        .code-row:hover { background-color: rgba(30, 41, 59, 0.8); }
+
+        .ln {
+            background-color: #0f172a;
+            color: #64748b;
+            text-align: right;
+            padding: 0.5rem 0.75rem 0.5rem 0;
+            user-select: none;
+            border-right: 1px solid #334155;
+        }
+
+        .code-content {
+            padding: 0.5rem 1rem;
+            color: #e2e8f0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        /* Explanations styled as annotations block */
+        .annotation {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background-color: rgba(15, 23, 42, 0.5);
+            border-left: 2px solid #64748b;
+            color: #94a3b8;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-style: italic;
+        }
+
+        /* Command Box */
+        .command-box {
+            background-color: #0f172a;
+            border: 1px dashed #475569;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #94a3b8;
+        }
+        .command-text { color: #4ade80; }
+
+        /* Syntax Highlighting */
+        .kwd { color: #c084fc; } /* keyword - purple */
+        .cls { color: #fbbf24; } /* class - yellow */
+        .func { color: #60a5fa; } /* function - blue */
+        .str { color: #4ade80; } /* string - green */
+        .var { color: #f472b6; } /* variable - pink */
+        .cmt { color: #64748b; } /* comment - gray */
+
+        /* Badges */
+        .badge { font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: bold; padding: 2px 6px; border-radius: 4px; margin-left: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .badge-req { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .badge-rec { background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .badge-opt { background: rgba(100, 116, 139, 0.2); color: #cbd5e1; border: 1px solid rgba(100, 116, 139, 0.3); }
+    </style>
+</head>
+<body class="pb-20">
+
+    <!-- Mobile Header -->
+    <div class="md:hidden bg-slate-900 border-b border-slate-800 p-4 sticky top-0 z-50">
+        <h1 class="font-bold text-lg text-white">Anatomi Laravel</h1>
+    </div>
+
+    <div class="container mx-auto px-4 mt-8 flex flex-col md:flex-row gap-8">
+        
+        <!-- Sidebar -->
+        <aside class="hidden md:block w-64 flex-shrink-0 sticky top-8 h-fit">
+            <div class="bg-slate-900 rounded-xl border border-slate-800 p-6">
+                <h2 class="font-bold text-lg text-white mb-4 flex items-center gap-2">
+                    <i data-lucide="book-open" class="w-5 h-5 text-indigo-500"></i> Navigasi
+                </h2>
+                <nav class="space-y-1">
+                    <a href="#routes" class="nav-link text-yellow-400">1. Routes</a>
+                    <a href="#controller" class="nav-link text-blue-400">2. Controller</a>
+                    <a href="#model" class="nav-link text-green-400">3. Model</a>
+                    <a href="#view" class="nav-link text-pink-400">4. View</a>
+                </nav>
+                <div class="mt-6 pt-6 border-t border-slate-800 text-xs space-y-2">
+                    <div class="flex items-center gap-2 text-red-300"><span class="w-2 h-2 bg-red-500 rounded-full"></span> WAJIB (Harus Ada)</div>
+                    <div class="flex items-center gap-2 text-blue-300"><span class="w-2 h-2 bg-blue-500 rounded-full"></span> PENTING (Best Practice)</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 min-w-0">
+            
+            <div class="mb-10">
+                <h1 class="text-3xl font-bold text-white mb-2">Buku Saku Struktur Laravel</h1>
+                <p class="text-slate-400">Panduan bedah kode per baris untuk pemula.</p>
+            </div>
+
+            <!-- 1. ANATOMI ROUTES -->
+            <section id="routes" class="mb-16">
+                <h2 class="text-xl font-bold text-yellow-400 mb-4 flex items-center gap-2">
+                    <i data-lucide="map" class="w-6 h-6"></i> 1. Routes (web.php)
+                </h2>
+                
+                <div class="command-box">
+                    <i data-lucide="terminal" class="w-4 h-4"></i>
+                    <span>Command: <span class="text-slate-500">(Otomatis ada)</span></span>
+                </div>
+
+                <div class="anatomy-container">
+                    
+                    <div class="code-row">
+                        <div class="ln">1</div>
+                        <div class="code-content">
+                            <span class="kwd">use</span> Illuminate\Support\Facades\Route; <span class="badge badge-req">Wajib</span>
+                            <div class="annotation">Library utama Routing. Tanpa baris ini, kode <code>Route::</code> akan error.</div>
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">2</div>
+                        <div class="code-content">
+                            <span class="kwd">use</span> App\Http\Controllers\ProdukController; <span class="badge badge-req">Wajib Import</span>
+                            <div class="annotation">Agar file ini kenal siapa itu "ProdukController". Wajib ditambah manual setiap bikin controller baru.</div>
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">3</div>
+                        <div class="code-content">&nbsp;</div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">4</div>
+                        <div class="code-content">
+                            <span class="cls">Route</span>::<span class="func">get</span>(<span class="str">'/produk'</span>, [<span class="cls">ProdukController</span>::<span class="kwd">class</span>, <span class="str">'index'</span>]); <span class="badge badge-req">Definisi</span>
+                            <div class="annotation">
+                                Struktur: <code>Route::method('url', [Controller, 'fungsi']);</code><br>
+                                Gunakan <b>get</b> untuk tampil halaman, <b>post</b> untuk simpan data.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 2. ANATOMI CONTROLLER -->
+            <section id="controller" class="mb-16">
+                <h2 class="text-xl font-bold text-blue-400 mb-4 flex items-center gap-2">
+                    <i data-lucide="cpu" class="w-6 h-6"></i> 2. Controller (ProdukController.php)
+                </h2>
+
+                <div class="command-box">
+                    <i data-lucide="terminal" class="w-4 h-4"></i>
+                    <span>Command: <span class="command-text">php artisan make:controller ProdukController</span></span>
+                </div>
+
+                <div class="anatomy-container">
+                    
+                    <div class="code-row">
+                        <div class="ln">1</div>
+                        <div class="code-content">
+                            <span class="kwd">namespace</span> App\Http\Controllers; <span class="badge badge-req">Wajib</span>
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">2</div>
+                        <div class="code-content">&nbsp;</div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">3</div>
+                        <div class="code-content">
+                            <span class="kwd">use</span> App\Models\Produk; <span class="badge badge-rec">Penting</span>
+                            <div class="annotation">Panggil Model disini agar Controller bisa mengambil data dari database.</div>
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">4</div>
+                        <div class="code-content">&nbsp;</div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">5</div>
+                        <div class="code-content">
+                            <span class="kwd">class</span> <span class="cls">ProdukController</span> <span class="kwd">extends</span> <span class="cls">Controller</span> <span class="badge badge-req">Wajib</span>
+                            <div class="annotation">Nama Class HARUS SAMA dengan nama file. Wajib mewarisi sifat induk Controller.</div>
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">6</div>
+                        <div class="code-content">{</div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">7</div>
+                        <div class="code-content">
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kwd">public function</span> <span class="func">index</span>() <span class="badge badge-req">Method</span>
+                            <div class="annotation">Fungsi yang dipanggil oleh Route. Harus public.</div>
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">8</div>
+                        <div class="code-content">&nbsp;&nbsp;&nbsp;&nbsp;{</div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">9</div>
+                        <div class="code-content">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">$data</span> = <span class="cls">Produk</span>::<span class="func">all</span>();
+                            <div class="annotation">Logika: Minta semua data ke Model Produk.</div>
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">10</div>
+                        <div class="code-content">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kwd">return</span> <span class="func">view</span>(<span class="str">'halaman_produk'</span>, [<span class="str">'list'</span> => <span class="var">$data</span>]); <span class="badge badge-req">Return</span>
+                            <div class="annotation">Wajib mengembalikan sesuatu. Disini kita kirim data ke View 'halaman_produk'.</div>
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">11</div>
+                        <div class="code-content">&nbsp;&nbsp;&nbsp;&nbsp;}</div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">12</div>
+                        <div class="code-content">}</div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 3. ANATOMI MODEL -->
+            <section id="model" class="mb-16">
+                <h2 class="text-xl font-bold text-green-400 mb-4 flex items-center gap-2">
+                    <i data-lucide="database" class="w-6 h-6"></i> 3. Model (Produk.php)
+                </h2>
+
+                <div class="command-box">
+                    <i data-lucide="terminal" class="w-4 h-4"></i>
+                    <span>Command: <span class="command-text">php artisan make:model Produk</span></span>
+                </div>
+
+                <div class="anatomy-container">
+                    
+                    <div class="code-row">
+                        <div class="ln">1</div>
+                        <div class="code-content">
+                            <span class="kwd">namespace</span> App\Models;
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">2</div>
+                        <div class="code-content">
+                            <span class="kwd">use</span> Illuminate\Database\Eloquent\Model; <span class="badge badge-req">Wajib</span>
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">3</div>
+                        <div class="code-content">&nbsp;</div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">4</div>
+                        <div class="code-content">
+                            <span class="kwd">class</span> <span class="cls">Produk</span> <span class="kwd">extends</span> <span class="cls">Model</span>
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">5</div>
+                        <div class="code-content">{</div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">6</div>
+                        <div class="code-content">
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kwd">protected</span> <span class="var">$table</span> = <span class="str">'tb_produk'</span>; <span class="badge badge-opt">Opsional</span>
+                            <div class="annotation">
+                                Hanya pakai ini jika nama tabel BUKAN bahasa inggris jamak (misal: <code>tb_produk</code>).<br>
+                                Default Laravel mencari tabel: <code>produks</code>.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">7</div>
+                        <div class="code-content">&nbsp;</div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">8</div>
+                        <div class="code-content">
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kwd">protected</span> <span class="var">$fillable</span> = [<span class="str">'nama'</span>, <span class="str">'harga'</span>]; <span class="badge badge-rec">Sangat Penting</span>
+                            <div class="annotation">
+                                <b>Security:</b> Mendaftarkan kolom apa saja yang BOLEH diisi lewat Form.<br>
+                                Jika lupa, perintah <code>create()</code> akan error.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">9</div>
+                        <div class="code-content">}</div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 4. ANATOMI VIEW -->
+            <section id="view" class="mb-16">
+                <h2 class="text-xl font-bold text-pink-400 mb-4 flex items-center gap-2">
+                    <i data-lucide="layout" class="w-6 h-6"></i> 4. View (halaman_produk.blade.php)
+                </h2>
+
+                <div class="command-box">
+                    <i data-lucide="terminal" class="w-4 h-4"></i>
+                    <span>Command: <span class="text-slate-500">(Manual: Buat file .blade.php di folder resources/views)</span></span>
+                </div>
+
+                <div class="anatomy-container">
+                    
+                    <div class="code-row">
+                        <div class="ln">1</div>
+                        <div class="code-content">
+                            &lt;!DOCTYPE html&gt; <span class="badge badge-req">HTML</span>
+                            <div class="annotation">View adalah file HTML biasa yang disisipi kekuatan PHP (Blade).</div>
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">2</div>
+                        <div class="code-content">&lt;body&gt;</div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">3</div>
+                        <div class="code-content">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt; Daftar Produk &lt;/h1&gt;
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">4</div>
+                        <div class="code-content">&nbsp;</div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">5</div>
+                        <div class="code-content">
+                            &nbsp;&nbsp;&nbsp;&nbsp;@<span class="kwd">foreach</span>(<span class="var">$list</span> <span class="kwd">as</span> <span class="var">$item</span>) <span class="badge badge-rec">Looping</span>
+                            <div class="annotation">
+                                Syntax <code>@</code> adalah ciri khas Blade. Lebih bersih daripada <code>&lt;?php foreach ... ?&gt;</code>.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">6</div>
+                        <div class="code-content">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div&gt; {{ <span class="var">$item</span>-><span class="func">nama</span> }} &lt;/div&gt; <span class="badge badge-req">Echo</span>
+                            <div class="annotation">
+                                <code>{{ }}</code> digunakan untuk mencetak variabel ke layar (Mencegah serangan XSS).
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">7</div>
+                        <div class="code-content">
+                            &nbsp;&nbsp;&nbsp;&nbsp;@<span class="kwd">endforeach</span>
+                        </div>
+                    </div>
+
+                    <div class="code-row">
+                        <div class="ln">8</div>
+                        <div class="code-content">&lt;/body&gt;</div>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
