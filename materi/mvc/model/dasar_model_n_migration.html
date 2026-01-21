@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul 2: Laravel Database Engineering</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; }
+        code, pre { font-family: 'JetBrains Mono', monospace; }
+        
+        .code-block {
+            background-color: #1e293b; /* Slate 800 */
+            color: #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+            border: 1px solid #334155;
+        }
+        .comment { color: #94a3b8; font-style: italic; }
+        .keyword { color: #c084fc; font-weight: bold; } /* Purple */
+        .string { color: #86efac; } /* Green */
+        .function { color: #60a5fa; } /* Blue */
+        .variable { color: #fca5a5; } /* Red */
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Navbar -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fa-brands fa-laravel text-red-600 text-2xl"></i>
+                <h1 class="font-bold text-xl tracking-tight">Laravel Bootcamp <span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full ml-2">Modul 2</span></h1>
+            </div>
+            <div class="text-sm text-gray-500 font-mono">Project: toko-online</div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-10 space-y-12">
+
+        <!-- 1. Definisi & Konsep -->
+        <section>
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                <span class="bg-red-600 text-white w-8 h-8 rounded flex items-center justify-center text-sm">1</span>
+                Definisi & Konsep Dasar
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Migration Card -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:border-red-300 transition">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="p-3 bg-blue-100 text-blue-600 rounded-lg">
+                            <i class="fa-solid fa-map"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">Migration</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        <strong>"Blueprint / Arsitektur"</strong>.<br>
+                        Migration adalah cara kita mendesain tabel database menggunakan kode PHP (bukan lewat phpMyAdmin). <br><br>
+                        Jika laptop rusak atau pindah komputer, struktur database tetap aman tersimpan di file migration.
+                    </p>
+                </div>
+
+                <!-- Model Card -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:border-red-300 transition">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="p-3 bg-green-100 text-green-600 rounded-lg">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">Model (Eloquent)</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        <strong>"Manajer Gudang"</strong>.<br>
+                        Model adalah perwakilan tabel di dalam kode program. Kita tidak menggunakan SQL manual (SELECT * FROM) lagi, tapi kita menyuruh Model untuk mengambil atau menyimpan data.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Perintah Terminal (Terminal Command) -->
+        <section>
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                <span class="bg-red-600 text-white w-8 h-8 rounded flex items-center justify-center text-sm">2</span>
+                Perintah Terminal (The Magic Command)
+            </h2>
+            
+            <div class="bg-gray-900 rounded-xl overflow-hidden shadow-lg border border-gray-700">
+                <div class="bg-gray-800 px-4 py-2 flex items-center gap-2 border-b border-gray-700">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    <span class="text-xs text-gray-400 font-mono ml-2">User@Windows-Terminal: ~/toko-online</span>
+                </div>
+                <div class="p-6 font-mono text-sm">
+                    <p class="text-gray-400 mb-2"># 1. Membuat Model sekaligus File Migration-nya</p>
+                    <p class="text-white">
+                        <span class="text-green-400">php</span> artisan make:model <span class="text-yellow-300">Product</span> <span class="text-purple-400">-m</span>
+                    </p>
+                    
+                    <div class="my-6 border-t border-gray-700"></div>
+
+                    <p class="text-gray-400 mb-2"># 2. Menerapkan perubahan (Membuat Tabel Fisik di MySQL)</p>
+                    <p class="text-white">
+                        <span class="text-green-400">php</span> artisan migrate
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Standar Coding Migration -->
+        <section>
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                <span class="bg-red-600 text-white w-8 h-8 rounded flex items-center justify-center text-sm">3</span>
+                Standar Coding Migration (Studi Kasus Toko Online)
+            </h2>
+            <p class="mb-4 text-gray-600 text-sm">File ini ada di: <code>database/migrations/xxxx_xx_xx_create_products_table.php</code></p>
+
+            <div class="code-block text-sm">
+<pre>
+<span class="keyword">public function</span> <span class="function">up</span>(): <span class="keyword">void</span>
+{
+    Schema::<span class="function">create</span>(<span class="string">'products'</span>, <span class="keyword">function</span> (Blueprint <span class="variable">$table</span>) {
+        
+        <span class="comment">// 1. Primary Key</span>
+        <span class="variable">$table</span>-><span class="function">id</span>(); 
+
+        <span class="comment">// 2. Relasi (Foreign Key)</span>
+        <span class="variable">$table</span>-><span class="function">foreignId</span>(<span class="string">'category_id'</span>)-><span class="function">constrained</span>();
+
+        <span class="comment">// 3. Teks Dasar (String & Text)</span>
+        <span class="variable">$table</span>-><span class="function">string</span>(<span class="string">'name'</span>); <span class="comment">// VARCHAR(255)</span>
+        <span class="variable">$table</span>-><span class="function">text</span>(<span class="string">'description'</span>)-><span class="function">nullable</span>(); <span class="comment">// TEXT (Panjang)</span>
+
+        <span class="comment">// 4. Angka (Integer, Float, Decimal, Double)</span>
+        <span class="variable">$table</span>-><span class="function">integer</span>(<span class="string">'stock'</span>)-><span class="function">default</span>(0); <span class="comment">// Bilangan Bulat</span>
+        <span class="variable">$table</span>-><span class="function">decimal</span>(<span class="string">'price'</span>, 15, 2); <span class="comment">// UANG (Disarankan pakai Decimal agar akurat)</span>
+        <span class="variable">$table</span>-><span class="function">float</span>(<span class="string">'rating'</span>)-><span class="function">nullable</span>(); <span class="comment">// FLOAT (Koma sederhana, misal: 4.5)</span>
+        <span class="variable">$table</span>-><span class="function">double</span>(<span class="string">'weight'</span>); <span class="comment">// DOUBLE (Presisi lebih tinggi dari Float)</span>
+        
+        <span class="comment">// 5. Tanggal & Waktu</span>
+        <span class="variable">$table</span>-><span class="function">date</span>(<span class="string">'expired_at'</span>)-><span class="function">nullable</span>(); <span class="comment">// Tanggal saja</span>
+        <span class="variable">$table</span>-><span class="function">dateTime</span>(<span class="string">'published_at'</span>); <span class="comment">// Tanggal + Jam</span>
+
+        <span class="comment">// 6. Pilihan (Enum) & Boolean</span>
+        <span class="variable">$table</span>-><span class="function">enum</span>(<span class="string">'status'</span>, [<span class="string">'draft'</span>, <span class="string">'active'</span>, <span class="string">'sold'</span>]);
+        <span class="variable">$table</span>-><span class="function">boolean</span>(<span class="string">'is_featured'</span>)-><span class="function">default</span>(<span class="keyword">false</span>);
+
+        <span class="comment">// 7. Timestamp (Wajib)</span>
+        <span class="variable">$table</span>-><span class="function">timestamps</span>(); 
+    });
+}
+</pre>
+            </div>
+        </section>
+
+        <!-- CHEAT SHEET TIPE DATA -->
+        <section>
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                <span class="bg-gray-800 text-white w-8 h-8 rounded flex items-center justify-center text-sm"><i class="fa-solid fa-list"></i></span>
+                Referensi Lengkap Tipe Data (Cheat Sheet)
+            </h2>
+            <p class="text-sm text-gray-600 mb-4">Laravel memiliki banyak tipe data lain. Berikut yang wajib diketahui untuk level "Market Ready":</p>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                
+                <!-- Group Angka -->
+                <div class="bg-white border rounded-lg p-4">
+                    <h3 class="font-bold text-gray-800 border-b pb-2 mb-2">🔢 Angka (Numbers)</h3>
+                    <ul class="text-sm space-y-2">
+                        <li class="flex justify-between"><code class="text-red-500">->integer()</code> <span class="text-gray-500">Angka bulat standar (±2 Milyar)</span></li>
+                        <li class="flex justify-between"><code class="text-red-500">->bigInteger()</code> <span class="text-gray-500">Angka sangat besar (ID, NIK)</span></li>
+                        <li class="flex justify-between"><code class="text-red-500">->decimal(total, koma)</code> <span class="text-gray-500">Uang / Presisi Tinggi</span></li>
+                        <li class="flex justify-between"><code class="text-red-500">->float()</code> <span class="text-gray-500">Koma Sederhana (Ringan)</span></li>
+                    </ul>
+                </div>
+
+                <!-- Group Teks -->
+                <div class="bg-white border rounded-lg p-4">
+                    <h3 class="font-bold text-gray-800 border-b pb-2 mb-2">📝 Teks (Strings)</h3>
+                    <ul class="text-sm space-y-2">
+                        <li class="flex justify-between"><code class="text-blue-500">->string()</code> <span class="text-gray-500">Teks pendek (Max 255 char)</span></li>
+                        <li class="flex justify-between"><code class="text-blue-500">->text()</code> <span class="text-gray-500">Teks panjang (Artikel, Deskripsi)</span></li>
+                        <li class="flex justify-between"><code class="text-blue-500">->longText()</code> <span class="text-gray-500">Sangat panjang (Novel)</span></li>
+                        <li class="flex justify-between"><code class="text-blue-500">->json()</code> <span class="text-gray-500">Data JSON (Setting, Varian)</span></li>
+                    </ul>
+                </div>
+
+                <!-- Group Tanggal -->
+                <div class="bg-white border rounded-lg p-4">
+                    <h3 class="font-bold text-gray-800 border-b pb-2 mb-2">📅 Tanggal (Dates)</h3>
+                    <ul class="text-sm space-y-2">
+                        <li class="flex justify-between"><code class="text-green-500">->date()</code> <span class="text-gray-500">Tanggal saja (YYYY-MM-DD)</span></li>
+                        <li class="flex justify-between"><code class="text-green-500">->dateTime()</code> <span class="text-gray-500">Tanggal & Jam</span></li>
+                        <li class="flex justify-between"><code class="text-green-500">->time()</code> <span class="text-gray-500">Jam saja (HH:MM:SS)</span></li>
+                        <li class="flex justify-between"><code class="text-green-500">->year()</code> <span class="text-gray-500">Tahun saja (YYYY)</span></li>
+                    </ul>
+                </div>
+
+                <!-- Group Spesial -->
+                <div class="bg-white border rounded-lg p-4">
+                    <h3 class="font-bold text-gray-800 border-b pb-2 mb-2">🔒 Spesial (Advanced)</h3>
+                    <ul class="text-sm space-y-2">
+                        <li class="flex justify-between"><code class="text-purple-500">->uuid()</code> <span class="text-gray-500">ID Unik Acak (Keamanan)</span></li>
+                        <li class="flex justify-between"><code class="text-purple-500">->boolean()</code> <span class="text-gray-500">Benar/Salah (0 atau 1)</span></li>
+                        <li class="flex justify-between"><code class="text-purple-500">->binary()</code> <span class="text-gray-500">Data Biner (Blob/Gambar)</span></li>
+                        <li class="flex justify-between"><code class="text-purple-500">->softDeletes()</code> <span class="text-gray-500">Hapus sampah (Recycle Bin)</span></li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. Standar Coding Model -->
+        <section>
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                <span class="bg-red-600 text-white w-8 h-8 rounded flex items-center justify-center text-sm">4</span>
+                Standar Coding Model
+            </h2>
+            <p class="mb-4 text-gray-600 text-sm">File ini ada di: <code>app/Models/Product.php</code></p>
+
+            <div class="code-block text-sm">
+<pre>
+<span class="keyword">namespace</span> App\Models;
+
+<span class="keyword">use</span> Illuminate\Database\Eloquent\Model;
+<span class="keyword">use</span> Illuminate\Database\Eloquent\Factories\HasFactory;
+
+<span class="keyword">class</span> <span class="function">Product</span> <span class="keyword">extends</span> Model
+{
+    <span class="keyword">use</span> HasFactory;
+
+    <span class="comment">// 1. Mass Assignment (WAJIB ADA demi Keamanan)</span>
+    <span class="comment">// Mendaftar kolom mana saja yang BOLEH diisi secara massal/manual</span>
+    <span class="keyword">protected</span> <span class="variable">$fillable</span> = [
+        <span class="string">'category_id'</span>,
+        <span class="string">'name'</span>,
+        <span class="string">'description'</span>,
+        <span class="string">'price'</span>,
+        <span class="string">'stock'</span>,
+        <span class="string">'rating'</span>,
+        <span class="string">'weight'</span>,
+        <span class="string">'status'</span>,
+        <span class="string">'is_featured'</span>,
+        <span class="string">'expired_at'</span>,
+    ];
+
+    <span class="comment">// 2. Casting (Modern Laravel)</span>
+    <span class="comment">// Mengubah tipe data otomatis saat diambil dari database</span>
+    <span class="keyword">protected</span> <span class="variable">$casts</span> = [
+        <span class="string">'is_featured'</span> => <span class="string">'boolean'</span>,
+        <span class="string">'price'</span> => <span class="string">'decimal:2'</span>,
+        <span class="string">'expired_at'</span> => <span class="string">'date'</span>,
+        <span class="string">'rating'</span> => <span class="string">'float'</span>,
+    ];
+}
+</pre>
+            </div>
+            
+            <div class="mt-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg">
+                <h4 class="font-bold text-blue-800 mb-1">Tips: Kapan pakai Float vs Decimal?</h4>
+                <ul class="list-disc list-inside text-sm text-blue-700 space-y-1">
+                    <li>Gunakan <strong>Decimal</strong> untuk <strong>Uang</strong> (Rupiah/Dollar). Karena float bisa error pembulatan (contoh: 1000 jadi 999.99999).</li>
+                    <li>Gunakan <strong>Float</strong> untuk <strong>Skor/Rating</strong>, suhu, atau persentase sederhana.</li>
+                    <li>Gunakan <strong>Integer</strong> untuk <strong>Stok</strong> (Barang tidak mungkin setengah).</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-20 border-t pt-8 text-center text-gray-500 text-sm pb-10">
+            <p>Dibuat untuk Materi Pembelajaran Laravel 11 - Toko Online</p>
+        </footer>
+
+    </main>
+
+</body>
+</html>
