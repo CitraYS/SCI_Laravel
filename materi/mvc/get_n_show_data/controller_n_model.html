@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesi 11: Controller Logic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        code { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <nav class="bg-white border-b sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <i class="fa-brands fa-laravel text-red-600 text-2xl"></i>
+            <h1 class="font-bold text-lg">Sesi 11: Controller & Data Fetching</h1>
+        </div>
+        <span class="text-xs bg-gray-200 px-2 py-1 rounded">Backend Logic</span>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-10 space-y-12">
+
+        <!-- Konsep -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">1. Konsep: Pelayan & Koki</h2>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-l-4 border-l-blue-500">
+                <p class="mb-4">Jika <strong>Model</strong> adalah Koki (yang punya akses ke bahan baku/database), maka <strong>Controller</strong> adalah <strong>Pelayan</strong>.</p>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><i class="fa-solid fa-arrow-right text-blue-500"></i> <strong>Route:</strong> Tamu memesan makanan (URL).</li>
+                    <li><i class="fa-solid fa-arrow-right text-blue-500"></i> <strong>Controller:</strong> Pelayan menerima pesanan, lalu menyuruh Koki (Model) mengambil bahan.</li>
+                    <li><i class="fa-solid fa-arrow-right text-blue-500"></i> <strong>Result:</strong> Pelayan membawa bahan tersebut (Data) ke Meja (View).</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Step 1: Membuat Controller -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">2. Membuat Controller</h2>
+            <div class="bg-gray-900 text-white p-4 rounded-lg font-mono text-sm mb-4">
+                <span class="text-green-400">php</span> artisan make:controller <span class="text-yellow-300">ProductController</span>
+            </div>
+            <p class="text-sm text-gray-600">File akan muncul di: <code>app/Http/Controllers/ProductController.php</code></p>
+        </section>
+
+        <!-- Step 2: Mengambil Data Dasar -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">3. Logika Dasar (Ambil Semua)</h2>
+            <div class="bg-gray-800 text-gray-100 p-6 rounded-lg font-mono text-sm overflow-x-auto">
+<pre>
+<span class="text-purple-400">public function</span> index()
+{
+    <span class="text-gray-500">// Mengambil SEMUA data di tabel products</span>
+    <span class="text-blue-300">$products</span> = \App\Models\Product::all();
+
+    <span class="text-gray-500">// Debugging: Cek apakah data berhasil diambil</span>
+    <span class="text-red-400">dd</span>(<span class="text-blue-300">$products</span>);
+}
+</pre>
+            </div>
+        </section>
+
+        <!-- Step 3: Variasi Eloquent (UPDATED with dd() Only) -->
+        <section>
+            <h2 class="text-2xl font-bold mb-6">4. Variasi Eloquent (Market Ready Skill)</h2>
+            <p class="text-gray-600 mb-6">Di sesi ini, kita fokus memastikan datanya BENAR dulu menggunakan <code>dd()</code>. Jangan pikirkan tampilan dulu.</p>
+            
+            <div class="space-y-8">
+                
+                <!-- 1. Find (Detail Page) -->
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="bg-blue-50 px-6 py-3 border-b border-blue-100 flex items-center gap-2">
+                        <i class="fa-solid fa-magnifying-glass text-blue-600"></i>
+                        <h3 class="font-bold text-blue-900 text-sm">Case 1: Halaman Detail Produk (Find)</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-sm text-gray-600 mb-4">Digunakan saat user mengklik satu produk untuk melihat detailnya. Kita mencari berdasarkan ID.</p>
+                        <div class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+<pre>
+<span class="text-purple-400">public function</span> show(<span class="text-blue-300">$id</span>)
+{
+    <span class="text-gray-500">// Cari produk berdasarkan ID (misal: products/1)</span>
+    <span class="text-blue-300">$product</span> = Product::find(<span class="text-blue-300">$id</span>);
+
+    <span class="text-gray-500">// Jika ID ngawur (tidak ketemu), tampilkan 404</span>
+    <span class="text-purple-400">if</span> (!<span class="text-blue-300">$product</span>) {
+        abort(404);
+    }
+
+    <span class="text-gray-500">// Cek apakah data produk yang diambil sudah benar</span>
+    <span class="text-red-400">dd</span>(<span class="text-blue-300">$product</span>);
+}
+</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Where (Filtering) -->
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="bg-green-50 px-6 py-3 border-b border-green-100 flex items-center gap-2">
+                        <i class="fa-solid fa-filter text-green-600"></i>
+                        <h3 class="font-bold text-green-900 text-sm">Case 2: Filter Produk (Where)</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-sm text-gray-600 mb-4">Digunakan untuk menyaring data. Contoh: Menampilkan hanya produk yang stoknya mau habis.</p>
+                        <div class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+<pre>
+<span class="text-purple-400">public function</span> stockLow()
+{
+    <span class="text-gray-500">// Cari yang stoknya kurang dari 5</span>
+    <span class="text-gray-500">// WAJIB diakhiri ->get() untuk mengambil banyak data</span>
+    <span class="text-blue-300">$products</span> = Product::where(<span class="text-green-300">'stock'</span>, <span class="text-green-300">'<'</span>, 5)->get();
+
+    <span class="text-gray-500">// Cek apakah yang muncul hanya produk stok dikit</span>
+    <span class="text-red-400">dd</span>(<span class="text-blue-300">$products</span>);
+}
+</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Sorting (Ordering) -->
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="bg-orange-50 px-6 py-3 border-b border-orange-100 flex items-center gap-2">
+                        <i class="fa-solid fa-sort text-orange-600"></i>
+                        <h3 class="font-bold text-orange-900 text-sm">Case 3: Produk Terbaru (Sorting)</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-sm text-gray-600 mb-4">Digunakan agar produk yang baru diinput muncul paling atas.</p>
+                        <div class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+<pre>
+<span class="text-purple-400">public function</span> index()
+{
+    <span class="text-gray-500">// latest() = orderBy('created_at', 'desc')</span>
+    <span class="text-blue-300">$products</span> = Product::latest()->get();
+
+    <span class="text-gray-500">// Cek urutan array, pastikan ID terbesar ada di index 0</span>
+    <span class="text-red-400">dd</span>(<span class="text-blue-300">$products</span>);
+}
+</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. First (Single Result) -->
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="bg-purple-50 px-6 py-3 border-b border-purple-100 flex items-center gap-2">
+                        <i class="fa-solid fa-trophy text-purple-600"></i>
+                        <h3 class="font-bold text-purple-900 text-sm">Case 4: Produk Unggulan (First)</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-sm text-gray-600 mb-4">Digunakan jika kita hanya ingin mengambil SATU data saja berdasarkan kriteria tertentu.</p>
+                        <div class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+<pre>
+<span class="text-purple-400">public function</span> featured()
+{
+    <span class="text-gray-500">// Ambil 1 produk pertama yang statusnya 'featured'</span>
+    <span class="text-gray-500">// Pakai ->first(), BUKAN ->get()</span>
+    <span class="text-blue-300">$product</span> = Product::where(<span class="text-green-300">'is_featured'</span>, <span class="text-purple-400">true</span>)->first();
+
+    <span class="text-gray-500">// Cek data, pastikan ini bukan array tapi object</span>
+    <span class="text-red-400">dd</span>(<span class="text-blue-300">$product</span>);
+}
+</pre>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="mt-8 bg-yellow-50 p-4 rounded border-l-4 border-yellow-400 text-sm text-yellow-800">
+                <strong>Aturan Emas Eloquent:</strong> <br>
+                <ul class="list-disc list-inside mt-2 space-y-1">
+                    <li>Gunakan <code>->get()</code> jika hasilnya BANYAK data (Array/Collection).</li>
+                    <li>Gunakan <code>->first()</code> atau <code>->find()</code> jika hasilnya SATU data (Object).</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Step 5: Relasi / Join (NEW SECTION) -->
+        <section>
+            <h2 class="text-2xl font-bold mb-6">5. Relasi Antar Tabel (Pengganti Join)</h2>
+            <div class="bg-indigo-50 border-l-4 border-indigo-500 p-5 rounded-r-lg mb-6">
+                <p class="text-sm text-indigo-800">
+                    <strong>Penting:</strong> Di Laravel, kita jarang menggunakan <code>join SQL</code> manual. Kita menggunakan fitur <strong>Relationship</strong> yang didefinisikan di Model, lalu dipanggil di Controller menggunakan teknik <strong>Eager Loading</strong> (<code>with</code>).
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <!-- Langkah A: Model -->
+                <div class="bg-white p-5 rounded border border-gray-200">
+                    <h3 class="font-bold text-gray-800 mb-3 text-sm">Langkah A: Setting di Model</h3>
+                    <p class="text-xs text-gray-500 mb-2">File: <code>app/Models/Product.php</code></p>
+                    <div class="bg-gray-800 text-gray-100 p-3 rounded font-mono text-xs overflow-x-auto">
+<pre>
+<span class="text-purple-400">public function</span> category()
+{
+    <span class="text-gray-500">// 1. Mendaftarkan Hubungan (Kabel)</span>
+    <span class="text-purple-400">return</span> <span class="text-blue-300">$this</span>->belongsTo(Category::<span class="text-purple-400">class</span>);
+}
+</pre>
+                    </div>
+                    <div class="mt-3 bg-orange-50 p-2 rounded border border-orange-100 text-xs text-orange-800 italic">
+                        <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+                        <strong>Catatan:</strong> Menulis fungsi ini <strong>TIDAK</strong> otomatis memunculkan data kategori. Ini baru "memasang kabel". Kita harus "menyalakan saklar" di Controller (Langkah B).
+                    </div>
+                </div>
+
+                <!-- Langkah B: Controller -->
+                <div class="bg-white p-5 rounded border border-gray-200">
+                    <h3 class="font-bold text-gray-800 mb-3 text-sm">Langkah B: Panggil di Controller</h3>
+                    <p class="text-xs text-gray-500 mb-2">Gunakan <code>with()</code> untuk menyalakan saklarnya.</p>
+                    <div class="bg-gray-800 text-gray-100 p-3 rounded font-mono text-xs overflow-x-auto">
+<pre>
+<span class="text-purple-400">public function</span> index()
+{
+    <span class="text-gray-500">// 2. Eager Loading (Saklar Nyala)</span>
+    <span class="text-blue-300">$products</span> = Product::with(<span class="text-green-300">'category'</span>)->get();
+
+    <span class="text-red-400">dd</span>(<span class="text-blue-300">$products</span>);
+}
+</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Langkah C: Combo (Combinations) -->
+            <div class="bg-white p-5 rounded border border-gray-200 shadow-sm">
+                <h3 class="font-bold text-gray-800 mb-3 text-sm border-b pb-2">Langkah C: Kombinasi (Method Chaining)</h3>
+                <p class="text-sm text-gray-600 mb-3">Anda bisa menggabungkan <code>with()</code> dengan filter lain seperti <code>find</code>, <code>where</code>, atau <code>latest</code>. Letakkan <code>with()</code> di mana saja sebelum eksekusi akhir.</p>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <!-- Case 1: Detail + Relasi -->
+                    <div class="bg-gray-800 text-gray-100 p-3 rounded font-mono text-xs overflow-x-auto">
+                        <span class="text-gray-500">// Cari ID 1 beserta kategorinya</span><br>
+                        <span class="text-blue-300">$product</span> = Product::with(<span class="text-green-300">'category'</span>)->find(1);
+                    </div>
+
+                    <!-- Case 2: Filter + Relasi -->
+                    <div class="bg-gray-800 text-gray-100 p-3 rounded font-mono text-xs overflow-x-auto">
+                        <span class="text-gray-500">// Filter stok > 0 beserta kategorinya</span><br>
+                        <span class="text-blue-300">$products</span> = Product::with(<span class="text-green-300">'category'</span>)<br>
+                        &nbsp;&nbsp;->where(<span class="text-green-300">'stock'</span>, <span class="text-green-300">'>'</span>, 0)<br>
+                        &nbsp;&nbsp;->get();
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 6: Routing -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">6. Mendaftarkan Route</h2>
+            <p class="text-sm text-gray-600 mb-2">File: <code>routes/web.php</code></p>
+            <div class="bg-gray-800 text-gray-100 p-6 rounded-lg font-mono text-sm overflow-x-auto">
+<pre>
+<span class="text-purple-400">use</span> App\Http\Controllers\ProductController;
+
+Route::<span class="text-blue-300">get</span>(<span class="text-green-300">'/products'</span>, [ProductController::<span class="text-purple-400">class</span>, <span class="text-green-300">'index'</span>]);
+</pre>
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>

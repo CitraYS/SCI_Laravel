@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Sesi 11</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+    <div class="max-w-3xl mx-auto py-10 px-6">
+        <header class="mb-8 border-b pb-4">
+            <h1 class="text-3xl font-bold text-blue-900">Misi Sesi 11: The Data Hunter</h1>
+            <p class="text-gray-600">Tugas Anda adalah mengambil data spesifik dari Database dan membuktikannya dengan <code>dd()</code>.</p>
+        </header>
+
+        <div class="space-y-8">
+            
+            <!-- Intro Task -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h3 class="font-bold text-lg mb-2 flex items-center gap-2">
+                    <span class="bg-blue-600 text-white w-6 h-6 rounded flex items-center justify-center text-xs">0</span>
+                    Persiapan
+                </h3>
+                <p class="text-sm text-gray-600 mb-2">Pastikan Anda sudah punya Controller:</p>
+                <div class="bg-gray-100 p-2 rounded text-xs font-mono">php artisan make:controller ProductController</div>
+            </div>
+
+            <!-- Task 1: Basic -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-blue-500">
+                <h3 class="font-bold text-lg mb-2 text-blue-900">Misi 1: Cek Stok Gudang (Basic)</h3>
+                <p class="text-sm text-gray-600 mb-3">
+                    Ambil <strong>SEMUA</strong> data produk, tapi urutkan dari yang <strong>paling baru</strong> diinput.
+                </p>
+                <div class="bg-blue-50 p-3 rounded border border-blue-100 text-sm">
+                    <strong>Clue:</strong> Gunakan <code>latest()</code> dan jangan lupa <code>get()</code>. <br>
+                    <strong>Goal:</strong> Saat di-refresh, data dengan ID terbesar harus ada di paling atas (index 0).
+                </div>
+            </div>
+
+            <!-- Task 2: Filtering -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-green-500">
+                <h3 class="font-bold text-lg mb-2 text-green-900">Misi 2: Barang Langka (Where)</h3>
+                <p class="text-sm text-gray-600 mb-3">
+                    Boss minta data produk yang stoknya <strong>kurang dari atau sama dengan 10</strong>.
+                </p>
+                <div class="bg-green-50 p-3 rounded border border-green-100 text-sm">
+                    <strong>Clue:</strong> Gunakan <code>where('stock', '<=', 10)</code>. <br>
+                    <strong>Goal:</strong> Pastikan di layar hitam (dd), kolom <code>stock</code> pada semua item tidak ada yang lebih dari 10.
+                </div>
+            </div>
+
+            <!-- Task 3: Single Item -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-purple-500">
+                <h3 class="font-bold text-lg mb-2 text-purple-900">Misi 3: Pencarian Spesifik (Find)</h3>
+                <p class="text-sm text-gray-600 mb-3">
+                    Cari produk dengan <strong>ID 1</strong>.
+                </p>
+                <div class="bg-purple-50 p-3 rounded border border-purple-100 text-sm">
+                    <strong>Clue:</strong> Gunakan <code>find(1)</code>. <br>
+                    <strong>Goal:</strong> Hasilnya harus berupa <strong>Object</strong> (bukan Array). Tidak ada kurung siku <code>[]</code> pembungkus di tampilan <code>dd()</code>.
+                </div>
+            </div>
+
+            <!-- Task 4: Relation (Advanced) -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-orange-500">
+                <h3 class="font-bold text-lg mb-2 text-orange-900">Misi 4: Sambungkan Kabel (Relasi)</h3>
+                <p class="text-sm text-gray-600 mb-3">
+                    Ambil semua produk, tapi sertakan data <strong>Category</strong>-nya (Eager Loading).
+                </p>
+                <div class="space-y-3">
+                    <div class="bg-gray-50 p-3 rounded text-sm border">
+                        <strong>Langkah A (Model):</strong> Pastikan di <code>Product.php</code> sudah ada fungsi <code>category()</code> dengan <code>belongsTo</code>.
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded border border-orange-100 text-sm">
+                        <strong>Langkah B (Controller):</strong> Gunakan <code>with('category')</code> sebelum get. <br>
+                        <strong>Goal:</strong> Di tampilan <code>dd()</code>, klik panah kecil pada salah satu item produk -> cari properti <code>relations</code> -> pastikan ada isinya <code>category</code>.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <footer class="mt-10 text-center text-xs text-gray-500">
+            *Ingat: Gunakan dd() di setiap langkah untuk memverifikasi hasil sebelum lanjut ke misi berikutnya.
+        </footer>
+    </div>
+</body>
+</html>
