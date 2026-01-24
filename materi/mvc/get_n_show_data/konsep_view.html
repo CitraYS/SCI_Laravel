@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesi 12: View & Assets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        code { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <nav class="bg-white border-b sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <i class="fa-brands fa-laravel text-red-600 text-2xl"></i>
+            <h1 class="font-bold text-lg">Sesi 12: View & Asset Management</h1>
+        </div>
+        <span class="text-xs bg-gray-200 px-2 py-1 rounded">Frontend Basics</span>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-10 space-y-12">
+
+        <!-- Konsep -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">1. Konsep: Etalase & Dekorasi</h2>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-l-4 border-l-blue-500">
+                <p class="mb-2">Data dari Controller perlu ditampilkan di <strong>View</strong> (HTML).</p>
+                <p class="text-gray-600">Agar tidak polos, kita butuh <strong>CSS</strong>. Di Laravel, file gambar, CSS, dan JS publik harus disimpan di folder khusus bernama <code>public</code>.</p>
+            </div>
+        </section>
+
+        <!-- Step 1: Membuat File Blade -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">2. Membuat File View</h2>
+            <p class="text-sm text-gray-600 mb-2">Lokasi: <code>resources/views/products/index.blade.php</code></p>
+            <div class="bg-white p-4 rounded border border-gray-200">
+                <p class="text-sm text-gray-600">
+                    <strong>Kenapa .blade.php?</strong><br>
+                    Agar kita bisa menggunakan fitur pintar Laravel seperti <code>@foreach</code> dan <code>{{ $variable }}</code>. Kalau cuma <code>.php</code> biasa, codingnya akan ribet.
+                </p>
+            </div>
+        </section>
+
+        <!-- Step 2: Update Controller -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">3. Update Controller (Melempar Data)</h2>
+            <p class="text-sm text-gray-600 mb-2">Hapus <code>dd()</code>, ganti dengan return view.</p>
+            <div class="bg-gray-800 text-gray-100 p-6 rounded-lg font-mono text-sm overflow-x-auto">
+<pre>
+<span class="text-purple-400">public function</span> index()
+{
+    <span class="text-blue-300">$shopName</span> = <span class="text-green-300">"Toko Sembako Jaya"</span>; <span class="text-gray-500">// Data Tunggal (String)</span>
+    <span class="text-blue-300">$products</span> = \App\Models\Product::all(); <span class="text-gray-500">// Data Banyak (Array)</span>
+    
+    <span class="text-purple-400">return</span> view(<span class="text-green-300">'products.index'</span>, compact(<span class="text-green-300">'shopName'</span>, <span class="text-green-300">'products'</span>));
+}
+</pre>
+            </div>
+        </section>
+
+        <!-- Step 3: Manajemen Asset (PENTING) -->
+        <section>
+            <h2 class="text-2xl font-bold mb-6">4. Manajemen Asset (CSS Manual)</h2>
+            <p class="text-gray-600 mb-4">Di Laravel, kita tidak boleh menyimpan CSS di dalam folder <code>resources</code> atau <code>app</code> jika ingin diakses langsung oleh browser.</p>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <!-- Struktur Folder & Isi CSS -->
+                <div class="bg-white p-5 rounded border border-gray-200">
+                    <h3 class="font-bold text-gray-800 mb-3 text-sm">Langkah A: Buat File CSS</h3>
+                    <p class="text-xs text-gray-500 mb-2">Buat file di <code>public/css/style.css</code>:</p>
+                    <div class="bg-gray-800 text-gray-100 p-3 rounded font-mono text-xs overflow-x-auto mb-3">
+                        my-project/<br>
+                        ├── public/<br>
+                        │   ├── css/<br>
+                        │   │   └── <span class="text-green-300">style.css</span><br>
+                        │   └── ...
+                    </div>
+                    <p class="text-xs text-gray-600 mb-1"><strong>Isi File style.css:</strong></p>
+                    <div class="bg-gray-100 p-3 rounded text-xs font-mono border border-gray-300 text-gray-700">
+<pre>
+body {
+    font-family: sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.title {
+    color: #2563eb; /* Biru */
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+</pre>
+                    </div>
+                </div>
+
+                <!-- Cara Memanggil -->
+                <div class="bg-white p-5 rounded border border-gray-200">
+                    <h3 class="font-bold text-gray-800 mb-3 text-sm">Langkah B: Panggil dengan helper asset()</h3>
+                    <p class="text-xs text-gray-500 mb-2">Di dalam file <code>index.blade.php</code> bagian <code>&lt;head&gt;</code>:</p>
+                    <div class="bg-gray-800 text-gray-100 p-3 rounded font-mono text-xs overflow-x-auto">
+                        &lt;link rel="stylesheet" href="{{ <span class="text-yellow-300">asset</span>(<span class="text-green-300">'css/style.css'</span>) }}"&gt;
+                    </div>
+                    <p class="text-xs text-blue-600 mt-2 bg-blue-50 p-2 rounded">
+                        <strong>Fungsi asset():</strong> Otomatis membuat URL lengkap (http://localhost:8000/css/style.css). Jangan tulis manual path-nya!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Refresher CSS Selectors -->
+            <div class="bg-indigo-50 p-6 rounded-lg border border-indigo-100">
+                <h3 class="font-bold text-indigo-900 mb-4 text-sm"><i class="fa-solid fa-book-open mr-2"></i>Refresher: Dasar Penamaan CSS</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
+                    <!-- Tag Selector -->
+                    <div class="bg-white p-3 rounded border border-indigo-100 shadow-sm">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-gray-500">1. Tag Selector</span>
+                            <span class="bg-gray-200 text-gray-700 text-[10px] px-2 py-1 rounded">Global</span>
+                        </div>
+                        <code class="text-xs text-indigo-600 block mb-1">body { ... }</code>
+                        <p class="text-[10px] text-gray-500">Mempengaruhi <strong>SEMUA</strong> elemen <code>&lt;body&gt;</code> tanpa terkecuali.</p>
+                    </div>
+
+                    <!-- Class Selector -->
+                    <div class="bg-white p-3 rounded border border-indigo-100 shadow-sm border-l-4 border-l-indigo-500">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-indigo-700">2. Class Selector (.)</span>
+                            <span class="bg-indigo-100 text-indigo-700 text-[10px] px-2 py-1 rounded">Paling Sering</span>
+                        </div>
+                        <code class="text-xs text-indigo-600 block mb-1">.card { ... }</code>
+                        <p class="text-[10px] text-gray-500">Mempengaruhi elemen dengan <code>class="card"</code>. Bisa dipakai berulang kali.</p>
+                    </div>
+
+                    <!-- ID Selector -->
+                    <div class="bg-white p-3 rounded border border-indigo-100 shadow-sm">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-gray-500">3. ID Selector (#)</span>
+                            <span class="bg-gray-200 text-gray-700 text-[10px] px-2 py-1 rounded">Unik</span>
+                        </div>
+                        <code class="text-xs text-indigo-600 block mb-1">#header { ... }</code>
+                        <p class="text-[10px] text-gray-500">Hanya untuk <strong>SATU</strong> elemen unik dengan <code>id="header"</code>.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 5: Blade Syntax Dasar (NEW SECTION) -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">5. Blade Syntax 101 (Dasar)</h2>
+            <p class="text-gray-600 mb-4">Sebelum masuk ke looping data, pahami dulu cara menampilkan data satuan.</p>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Menampilkan Variabel -->
+                <div class="bg-white p-5 rounded border border-gray-200 shadow-sm">
+                    <h3 class="font-bold text-gray-800 mb-2 text-sm border-b pb-2">A. Menampilkan Variabel (Echo)</h3>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs text-gray-500">PHP Biasa:</span>
+                        <code class="text-xs bg-gray-100 px-1 rounded">&lt;?php echo $shopName; ?&gt;</code>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-purple-600 font-bold">Laravel Blade:</span>
+                        <code class="text-sm bg-purple-50 text-purple-700 px-2 py-1 rounded border border-purple-200 font-bold">{{ $shopName }}</code>
+                    </div>
+                    <p class="text-[10px] text-gray-400 mt-2 italic">*Kurung kurawal ganda {{ }} otomatis mengamankan data dari serangan XSS.</p>
+                </div>
+
+                <!-- Komentar -->
+                <div class="bg-white p-5 rounded border border-gray-200 shadow-sm">
+                    <h3 class="font-bold text-gray-800 mb-2 text-sm border-b pb-2">B. Komentar (Rahasia Dapur)</h3>
+                    <p class="text-xs text-gray-600 mb-2">Komentar ini tidak akan muncul di "View Page Source" browser.</p>
+                    <div class="bg-gray-800 text-gray-300 p-2 rounded font-mono text-xs">
+                        {{-- Ini catatan developer, user tidak bisa lihat --}}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 6: Coding View (FULL EXAMPLE) -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">6. Coding View Lengkap (HTML + Blade)</h2>
+            <div class="bg-gray-800 text-gray-100 p-6 rounded-lg font-mono text-sm overflow-x-auto">
+<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Toko Online&lt;/title&gt;
+    &lt;!-- Panggil CSS External --&gt;
+    &lt;link rel="stylesheet" href="{{ asset('css/style.css') }}"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;!-- CONTOH 1: Menampilkan Data Tunggal --&gt;
+    &lt;h1&gt;Selamat Datang di {{ <span class="text-blue-300">$shopName</span> }}&lt;/h1&gt;
+
+    &lt;hr&gt;
+
+    &lt;!-- CONTOH 2: Menampilkan Banyak Data (Looping) --&gt;
+    &lt;h2&gt;Daftar Produk&lt;/h2&gt;
+
+    &lt;div class="container"&gt;
+        <span class="text-purple-400">@foreach</span>(<span class="text-blue-300">$products</span> <span class="text-purple-400">as</span> <span class="text-blue-300">$product</span>)
+            
+            &lt;div class="card"&gt;
+                &lt;h3 class="title"&gt;{{ <span class="text-blue-300">$product</span>->name }}&lt;/h3&gt;
+                &lt;p&gt;Rp {{ number_format(<span class="text-blue-300">$product</span>->price) }}&lt;/p&gt;
+                
+                <span class="text-purple-400">@if</span>(<span class="text-blue-300">$product</span>->stock < 5)
+                    &lt;small style="color: red;"&gt;Stok menipis: {{ <span class="text-blue-300">$product</span>->stock }}&lt;/small&gt;
+                <span class="text-purple-400">@else</span>
+                    &lt;small&gt;Stok: {{ <span class="text-blue-300">$product</span>->stock }}&lt;/small&gt;
+                <span class="text-purple-400">@endif</span>
+            &lt;/div&gt;
+
+        <span class="text-purple-400">@endforeach</span>
+    &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>
