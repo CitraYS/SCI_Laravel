@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesi 14: Update & Delete</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        code { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <nav class="bg-white border-b sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <i class="fa-brands fa-laravel text-red-600 text-2xl"></i>
+            <h1 class="font-bold text-lg">Sesi 14: Update & Delete</h1>
+        </div>
+        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Advanced CRUD</span>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-10 space-y-12">
+
+        <!-- Konsep -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">1. Konsep: Method Spoofing</h2>
+            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-orange-500">
+                <p class="mb-4 text-sm text-gray-700">HTML Form standar hanya mengerti method <code>GET</code> dan <code>POST</code>. <br>
+                Namun, standar Modern (RESTful) mengharuskan:</p>
+                <ul class="space-y-1 text-sm font-bold text-gray-800 ml-4 mb-4">
+                    <li><span class="text-blue-600">PUT</span> untuk Update/Edit</li>
+                    <li><span class="text-red-600">DELETE</span> untuk Hapus</li>
+                </ul>
+                <p class="text-sm text-gray-700">
+                    Di Laravel, kita "menipu" form agar seolah-olah mengirim PUT/DELETE menggunakan directive: <br>
+                    <code class="bg-gray-100 px-2 py-1 rounded mt-1 inline-block">@method('PUT')</code> dan <code class="bg-gray-100 px-2 py-1 rounded mt-1 inline-block">@method('DELETE')</code>.
+                </p>
+            </div>
+        </section>
+
+        <!-- Step 1: Edit Flow -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">2. Fitur Edit (Formulir Isi Data Lama)</h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Controller Edit -->
+                <div class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-xs overflow-x-auto">
+                    <p class="text-gray-500 mb-2">// 1. Tampilkan Form Edit (Bawa Data)</p>
+                    <span class="text-purple-400">public function</span> edit(<span class="text-blue-300">$id</span>) <br>
+                    {<br>
+                    &nbsp;&nbsp;<span class="text-blue-300">$product</span> = Product::find(<span class="text-blue-300">$id</span>);<br>
+                    &nbsp;&nbsp;<span class="text-purple-400">return</span> view(<span class="text-green-300">'products.edit'</span>, compact(<span class="text-green-300">'product'</span>));<br>
+                    }
+                </div>
+
+                <!-- View Edit -->
+                <div class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-xs overflow-x-auto">
+                    <p class="text-gray-500 mb-2">// 2. Form Edit (Value Otomatis Terisi)</p>
+                    &lt;form action="/products/{{ <span class="text-blue-300">$product</span>->id }}" method="POST"&gt;<br>
+                    &nbsp;&nbsp;<span class="text-purple-400">@csrf</span><br>
+                    &nbsp;&nbsp;<span class="text-purple-400">@method</span>(<span class="text-green-300">'PUT'</span>) <span class="text-gray-500">// <-- PENTING!</span><br><br>
+                    &nbsp;&nbsp;&lt;input name="name" value="{{ <span class="text-blue-300">$product</span>->name }}"&gt;<br>
+                    &lt;/form&gt;
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 2: Update Logic -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">3. Logic Update</h2>
+            <div class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+<pre>
+<span class="text-purple-400">public function</span> update(Request <span class="text-blue-300">$request</span>, <span class="text-blue-300">$id</span>)
+{
+    <span class="text-gray-500">// 1. Cari Produknya dulu</span>
+    <span class="text-blue-300">$product</span> = Product::find(<span class="text-blue-300">$id</span>);
+
+    <span class="text-gray-500">// 2. Validasi & Update</span>
+    <span class="text-gray-500">// (Cara update massal, mirip create)</span>
+    <span class="text-blue-300">$product</span>->update(<span class="text-blue-300">$request</span>->all());
+
+    <span class="text-purple-400">return</span> redirect(<span class="text-green-300">'/products'</span>)->with(<span class="text-green-300">'success'</span>, <span class="text-green-300">'Produk berhasil diupdate!'</span>);
+}
+</pre>
+            </div>
+        </section>
+
+        <!-- Step 3: Delete -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">4. Fitur Delete (Hapus)</h2>
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4 text-sm text-red-800">
+                <strong>Safety First:</strong> Jangan pernah menggunakan Link <code>&lt;a href...&gt;</code> untuk menghapus data. Itu tidak aman. Gunakan Form dengan method DELETE.
+            </div>
+
+            <div class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto mb-4">
+<pre>
+<span class="text-gray-500">// A. Di View (Tombol Hapus)</span>
+&lt;form action="/products/{{ <span class="text-blue-300">$product</span>->id }}" method="POST" <span class="text-yellow-300">onsubmit="return confirm('Yakin hapus?')"</span>&gt;
+    <span class="text-purple-400">@csrf</span>
+    <span class="text-purple-400">@method</span>(<span class="text-red-400">'DELETE'</span>)
+    &lt;button type="submit"&gt;Hapus&lt;/button&gt;
+&lt;/form&gt;
+
+<span class="text-gray-500">// B. Di Controller</span>
+<span class="text-purple-400">public function</span> destroy(<span class="text-blue-300">$id</span>)
+{
+    <span class="text-blue-300">$product</span> = Product::find(<span class="text-blue-300">$id</span>);
+    <span class="text-blue-300">$product</span>->delete();
+    <span class="text-purple-400">return</span> redirect(<span class="text-green-300">'/products'</span>);
+}
+</pre>
+            </div>
+        </section>
+
+        <!-- Step 4: Route List -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">5. Daftar Route Lengkap</h2>
+            <div class="bg-white p-4 border rounded font-mono text-sm">
+                Route::get('/products/{id}/edit', [ProductController::class, 'edit']);<br>
+                Route::put('/products/{id}', [ProductController::class, 'update']);<br>
+                Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>
