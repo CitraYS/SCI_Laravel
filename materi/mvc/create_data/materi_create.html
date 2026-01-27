@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesi 13: Create & Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        code { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <nav class="bg-white border-b sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <i class="fa-brands fa-laravel text-red-600 text-2xl"></i>
+            <h1 class="font-bold text-lg">Sesi 13: Input Data (Create)</h1>
+        </div>
+        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Forms & Logic</span>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-10 space-y-12">
+
+        <!-- Konsep -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">1. Alur Kerja "Create"</h2>
+            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-blue-500">
+                <p class="mb-4">Untuk membuat fitur tambah data, kita butuh <strong>2 Rute (Routes)</strong>:</p>
+                <ol class="list-decimal list-inside space-y-2 text-sm text-gray-700">
+                    <li><strong>GET (create):</strong> Hanya menampilkan Formulir kosong kepada user.</li>
+                    <li><strong>POST (store):</strong> Menerima data dari formulir, memvalidasi, dan menyimpannya ke Database.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Step 1: Controller -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">2. Logic Controller</h2>
+            <p class="text-sm text-gray-600 mb-2">Tambahkan 2 method ini di <code>ProductController.php</code></p>
+            
+            <div class="space-y-4">
+                <!-- Method Create -->
+                <div class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+<pre>
+<span class="text-gray-500">// 1. Method GET: Hanya untuk MENAMPILKAN Form HTML</span>
+<span class="text-gray-500">// Standar Laravel menamakannya 'create', tapi bisa diganti jadi 'pageCreate' atau 'viewCreate'</span>
+<span class="text-purple-400">public function</span> create()
+{
+    <span class="text-purple-400">return</span> view(<span class="text-green-300">'products.create'</span>);
+}
+</pre>
+                </div>
+
+                <!-- Info Box Naming Convention -->
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r text-sm text-blue-800">
+                    <h4 class="font-bold flex items-center gap-2"><i class="fa-solid fa-circle-info"></i> Info: Kenapa namanya 'create' dan 'store'?</h4>
+                    <p class="mt-1">
+                        Ini adalah standar industri (Resource Controller). <br>
+                        - <strong>create()</strong> = Menyiapkan/menampilkan halaman pembuatan. <br>
+                        - <strong>store()</strong> = Menyimpan data kiriman user. <br>
+                        Anda <em>boleh</em> menggantinya (misal: <code>pageCreate</code>), tapi Route-nya juga harus diupdate: <br>
+                        <code>Route::get('/products/create', [ProductController::class, 'pageCreate']);</code>
+                    </p>
+                </div>
+
+                <!-- Method Store -->
+                <div class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+<pre>
+<span class="text-gray-500">// 2. Method POST: Menerima & Memproses Data (Simpan)</span>
+<span class="text-purple-400">public function</span> store(Request <span class="text-blue-300">$request</span>)
+{
+    <span class="text-gray-500">// A. Validasi (Security Guard)</span>
+    <span class="text-gray-500">// Pastikan data sesuai aturan sebelum masuk database</span>
+    <span class="text-blue-300">$request</span>->validate([
+        <span class="text-green-300">'name'</span> => <span class="text-green-300">'required|min:3'</span>,
+        <span class="text-green-300">'price'</span> => <span class="text-green-300">'required|numeric'</span>,
+        <span class="text-green-300">'stock'</span> => <span class="text-green-300">'required|integer'</span>,
+    ]);
+
+    <span class="text-gray-500">// B. Simpan ke Database (Cara Cepat / Mass Assignment)</span>
+    <span class="text-gray-500">// Product::create otomatis mencocokkan nama input form dengan nama kolom tabel</span>
+    Product::create(<span class="text-blue-300">$request</span>->all());
+
+    <span class="text-gray-500">// C. Redirect (Kembalikan ke halaman index)</span>
+    <span class="text-purple-400">return</span> redirect(<span class="text-green-300">'/products'</span>)->with(<span class="text-green-300">'success'</span>, <span class="text-green-300">'Produk berhasil ditambahkan!'</span>);
+}
+</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enrichment: Variasi Create (NEW SECTION) -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">3. Variasi Simpan Data (Enrichment)</h2>
+            <p class="text-gray-600 mb-4">Cara <code>::create($request->all())</code> adalah cara "Magic". Namun, kadang kita butuh cara manual.</p>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <!-- Cara 1: Mass Assignment -->
+                <div class="bg-green-50 p-5 rounded border border-green-200">
+                    <h3 class="font-bold text-green-900 mb-2 text-sm">Cara A: Mass Assignment (Magic)</h3>
+                    <p class="text-xs text-gray-600 mb-3">Paling cepat. Cocok jika nama input form SAMA PERSIS dengan nama kolom database.</p>
+                    <div class="bg-white p-3 rounded font-mono text-xs border">
+                        Product::create(<span class="text-blue-600">$request</span>->all());
+                    </div>
+                    <p class="text-xs text-green-700 mt-2">
+                        <i class="fa-solid fa-check-circle"></i> Wajib setting <code>$fillable</code> di Model.
+                    </p>
+                </div>
+
+                <!-- Cara 2: Manual Instance -->
+                <div class="bg-blue-50 p-5 rounded border border-blue-200">
+                    <h3 class="font-bold text-blue-900 mb-2 text-sm">Cara B: Manual OOP (Explicit)</h3>
+                    <p class="text-xs text-gray-600 mb-3">Lebih verbose/panjang. Cocok jika data perlu diubah dulu sebelum disimpan (contoh: upload file).</p>
+                    <div class="bg-white p-3 rounded font-mono text-xs border">
+                        <span class="text-blue-600">$product</span> = new Product();<br>
+                        <span class="text-blue-600">$product</span>->name = <span class="text-blue-600">$request</span>->name;<br>
+                        <span class="text-blue-600">$product</span>->price = <span class="text-blue-600">$request</span>->price + 5000; <span class="text-gray-400">// Manipulasi</span><br>
+                        <span class="text-blue-600">$product</span>->save();
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cara 3: Logic di Model (NEW) -->
+            <div class="bg-purple-50 p-5 rounded border border-purple-200">
+                <h3 class="font-bold text-purple-900 mb-2 text-sm flex items-center gap-2">
+                    Cara C: Logic di Model (Advanced / Cleaner Controller)
+                    <span class="text-[10px] bg-purple-200 text-purple-800 px-2 py-0.5 rounded-full">Best Practice</span>
+                </h3>
+                <p class="text-xs text-gray-600 mb-4">
+                    Jika logika penyimpanan rumit, Controller cukup "menyuruh" Model. Controller tetap bersih, Model yang bekerja keras (Fat Model, Skinny Controller).
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <!-- Step 1: Model Code -->
+                    <div>
+                        <p class="text-xs font-bold text-purple-800 mb-1">1. Buat Fungsi di Model (Product.php)</p>
+                        <div class="bg-white p-3 rounded font-mono text-xs border border-purple-100 h-full">
+<pre>
+<span class="text-gray-500">// Static function agar bisa dipanggil tanpa 'new'</span>
+<span class="text-purple-400">public static function</span> simpanData(<span class="text-blue-300">$data</span>)
+{
+    <span class="text-gray-500">// Manipulasi data di sini (misal: hitung pajak)</span>
+    <span class="text-blue-300">$data</span>[<span class="text-green-300">'price'</span>] = <span class="text-blue-300">$data</span>[<span class="text-green-300">'price'</span>] + 1000;
+    
+    <span class="text-gray-500">// Simpan</span>
+    <span class="text-purple-400">return</span> self::create(<span class="text-blue-300">$data</span>);
+}
+</pre>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Controller Code -->
+                    <div>
+                        <p class="text-xs font-bold text-purple-800 mb-1">2. Panggil di Controller (ProductController.php)</p>
+                        <div class="bg-white p-3 rounded font-mono text-xs border border-purple-100 h-full flex items-center">
+<pre>
+<span class="text-purple-400">public function</span> store(Request <span class="text-blue-300">$request</span>)
+{
+    <span class="text-gray-500">// Controller tinggal panggil 1 baris saja</span>
+    Product::simpanData(<span class="text-blue-300">$request</span>->all());
+
+    <span class="text-purple-400">return</span> redirect(<span class="text-green-300">'/products'</span>);
+}
+</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pro Tip: Complex Logic -->
+            <div class="mt-6 bg-gray-800 text-gray-300 p-4 rounded-lg text-sm border-l-4 border-yellow-500">
+                <strong class="text-white block mb-1"><i class="fa-solid fa-lightbulb text-yellow-400"></i> Wawasan Industri:</strong>
+                Cara C di atas adalah langkah awal menuju arsitektur yang rapi. Untuk aplikasi besar, programmer senior biasanya memindahkan logika tersebut lebih jauh lagi ke dalam class khusus bernama <strong>Service</strong> atau <strong>Repository</strong>.
+            </div>
+        </section>
+
+        <!-- Step 2: Route -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">4. Daftarkan Route</h2>
+            <p class="text-sm text-gray-600 mb-2">File: <code>routes/web.php</code></p>
+            <div class="bg-yellow-50 p-4 border-l-4 border-yellow-400 text-sm mb-4">
+                <strong>PENTING:</strong> Route <code>create</code> harus ditaruh <strong>DI ATAS</strong> route <code>show/{id}</code>. Jika tidak, Laravel akan mengira kata "create" adalah ID produk.
+            </div>
+            <div class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+<pre>
+Route::<span class="text-blue-300">get</span>(<span class="text-green-300">'/products/create'</span>, [ProductController::<span class="text-purple-400">class</span>, <span class="text-green-300">'create'</span>]); <span class="text-gray-500">// Tampil Form</span>
+Route::<span class="text-blue-300">post</span>(<span class="text-green-300">'/products'</span>, [ProductController::<span class="text-purple-400">class</span>, <span class="text-green-300">'store'</span>]); <span class="text-gray-500">// Proses Simpan</span>
+</pre>
+            </div>
+        </section>
+
+        <!-- Step 3: View Form -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">5. Membuat Form (Blade)</h2>
+            <p class="text-sm text-gray-600 mb-2">File: <code>resources/views/products/create.blade.php</code></p>
+            
+            <div class="bg-white border rounded p-4">
+                <h3 class="font-bold text-sm text-gray-700 mb-2">Poin Penting Form Laravel:</h3>
+                <ul class="list-disc list-inside text-xs text-gray-600 space-y-1 mb-4">
+                    <li><strong>action:</strong> Arahkan ke route POST.</li>
+                    <li><strong>@csrf:</strong> (Wajib) Token keamanan untuk mencegah serangan Cross-Site Request Forgery. Tanpa ini, form akan Expired (Error 419).</li>
+                    <li><strong>name="...":</strong> Harus SAMA PERSIS dengan nama kolom di database.</li>
+                </ul>
+
+                <div class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+<pre>
+&lt;form action="/products" method="POST"&gt;
+    <span class="text-purple-400">@csrf</span> <span class="text-gray-500">&lt;!-- WAJIB ADA --&gt;</span>
+
+    &lt;div class="mb-3"&gt;
+        &lt;label&gt;Nama Produk&lt;/label&gt;
+        &lt;input type="text" name="name" class="border p-2 w-full"&gt;
+        <span class="text-gray-500">&lt;!-- Pesan Error Validasi --&gt;</span>
+        <span class="text-purple-400">@error</span>(<span class="text-green-300">'name'</span>)
+            &lt;p class="text-red-500 text-sm"&gt;{{ <span class="text-blue-300">$message</span> }}&lt;/p&gt;
+        <span class="text-purple-400">@enderror</span>
+    &lt;/div&gt;
+
+    &lt;div class="mb-3"&gt;
+        &lt;label&gt;Harga&lt;/label&gt;
+        &lt;input type="number" name="price" class="border p-2 w-full"&gt;
+    &lt;/div&gt;
+
+    &lt;button type="submit" class="bg-blue-500 text-white p-2 rounded"&gt;Simpan&lt;/button&gt;
+&lt;/form&gt;
+</pre>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>

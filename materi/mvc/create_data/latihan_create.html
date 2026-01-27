@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Sesi 13</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+    <div class="max-w-3xl mx-auto py-10 px-6">
+        <header class="mb-8 border-b pb-4">
+            <h1 class="text-3xl font-bold text-green-900">Studi Kasus Sesi 13: Pencatatan Barang Masuk</h1>
+            <p class="text-gray-600 mt-2">
+                <strong>Klien:</strong> Gudang "Toko Online"<br>
+                <strong>Masalah:</strong> Admin gudang masih mencatat barang baru di buku tulis.<br>
+                <strong>Tugas Anda:</strong> Buatkan halaman formulir digital agar admin bisa menginput data produk langsung ke sistem.
+            </p>
+        </header>
+
+        <div class="space-y-8">
+            
+            <!-- Step 1: Route & Controller -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-blue-500">
+                <h3 class="font-bold text-lg mb-2 text-blue-900">Langkah 1: Menyiapkan Jalur (Route & Controller)</h3>
+                <p class="text-sm text-gray-600 mb-3">
+                    Sebelum membuat tampilan, pastikan jalurnya sudah ada. Admin ingin mengakses form ini lewat alamat <code>/products/create</code>.
+                </p>
+                <div class="bg-blue-50 p-4 rounded border border-blue-100 text-sm space-y-2">
+                    <p><strong>To-Do List:</strong></p>
+                    <ul class="list-disc list-inside text-gray-700">
+                        <li>Buka <code>ProductController.php</code>, tambahkan method <code>create()</code> yang mengembalikan view <code>products.create</code>.</li>
+                        <li>Buka <code>web.php</code>, daftarkan route GET untuk alamat tersebut.</li>
+                        <li><strong>Cek:</strong> Buka browser. Jika muncul error "View not found", berarti jalur sudah benar (karena view belum dibuat).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Step 2: Form Interface -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-green-500">
+                <h3 class="font-bold text-lg mb-2 text-green-900">Langkah 2: Membangun Antarmuka (View)</h3>
+                <p class="text-sm text-gray-600 mb-3">
+                    Buat file <code>resources/views/products/create.blade.php</code>. Desain formulir yang rapi agar admin senang menggunakannya.
+                </p>
+                
+                <div class="bg-green-50 p-4 rounded border border-green-200 text-sm mb-4">
+                    <p class="font-bold text-green-800 mb-2">Spesifikasi Formulir:</p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li><strong>Action:</strong> Arahkan ke <code>/products</code> (Method POST).</li>
+                        <li><strong>Security:</strong> Jangan lupa token <code>@csrf</code>.</li>
+                        <li><strong>Input Fields:</strong>
+                            <ul class="pl-6 list-square text-xs text-gray-600 mt-1">
+                                <li><code>name</code> (Teks)</li>
+                                <li><code>price</code> (Angka)</li>
+                                <li><code>stock</code> (Angka)</li>
+                                <li><code>description</code> (Textarea - Opsional)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <p class="text-xs text-gray-500 italic">Tips: Gunakan class Tailwind seperti <code>w-full</code>, <code>border</code>, <code>p-2</code>, <code>rounded</code> agar tampilannya modern.</p>
+            </div>
+
+            <!-- Step 3: Logic Processing -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-purple-500">
+                <h3 class="font-bold text-lg mb-2 text-purple-900">Langkah 3: Proses Penyimpanan (Controller)</h3>
+                <p class="text-sm text-gray-600 mb-3">
+                    Form sudah ada, tapi belum bisa menyimpan. Tangani data kiriman admin di method <code>store()</code>.
+                </p>
+                <div class="bg-purple-50 p-4 rounded border border-purple-100 text-sm space-y-3">
+                    <div>
+                        <strong>1. Validasi Ketat:</strong>
+                        <p class="text-xs text-gray-600">Pastikan Nama Barang & Harga wajib diisi. Stok harus angka.</p>
+                    </div>
+                    <div>
+                        <strong>2. Simpan Data:</strong>
+                        <p class="text-xs text-gray-600">Gunakan <code>Product::create($request->all());</code>. <br>(Pastikan <code>$fillable</code> di Model sudah diatur!)</p>
+                    </div>
+                    <div>
+                        <strong>3. Feedback:</strong>
+                        <p class="text-xs text-gray-600">Setelah simpan, jangan biarkan layar putih. Redirect admin kembali ke halaman Daftar Produk (<code>/products</code>) dengan pesan sukses.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Check -->
+            <div class="bg-gray-800 text-gray-200 p-6 rounded-lg shadow-lg border border-gray-700 mt-8">
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fa-solid fa-clipboard-check text-yellow-400"></i>
+                    <h3 class="font-bold text-lg text-white">Uji Coba Mandiri (Quality Control)</h3>
+                </div>
+                <p class="text-sm mb-4">Lakukan skenario berikut untuk memastikan fitur Anda 100% bekerja:</p>
+                <ul class="list-decimal list-inside text-sm space-y-2 text-gray-300">
+                    <li>Buka halaman form, tekan tombol "Simpan" <strong>tanpa mengisi apapun</strong>. (Harus muncul pesan error / kembali ke form).</li>
+                    <li>Isi data dengan benar: <strong>"Kopi Robusta", Harga 15000, Stok 100</strong>. Tekan Simpan.</li>
+                    <li>Cek apakah halaman berpindah ke Index?</li>
+                    <li>Cek apakah "Kopi Robusta" muncul di daftar paling atas?</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
