@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesi 15: Implementasi Aksi CRUD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <nav class="bg-blue-800 text-white sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+        <h1 class="font-bold text-lg">Sesi 15: Implementasi Aksi CRUD</h1>
+        <span class="text-xs bg-blue-700 px-2 py-1 rounded">Full Logic</span>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-10 space-y-12">
+
+        <!-- 1. ILUSTRASI VISUAL (TARGET) -->
+        <section>
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-eye text-blue-600"></i> 1. Target Tampilan (Ilustrasi)
+            </h2>
+            <p class="text-gray-600 mb-6">Sebelum coding, pahami dulu bentuk tampilan yang akan kita buat.</p>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                
+                <!-- Ilustrasi Tabel -->
+                <div class="space-y-2">
+                    <h3 class="font-bold text-sm text-gray-700">A. Halaman Index (Tabel + Aksi)</h3>
+                    <div class="bg-gray-200 p-4 rounded-lg border border-gray-300 shadow-inner">
+                        <!-- Mockup Window -->
+                        <div class="bg-white rounded shadow-sm p-4">
+                            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                                <span class="font-bold text-gray-700">Daftar Produk</span>
+                                <button class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded shadow">+ Tambah Data</button>
+                            </div>
+                            <table class="w-full text-xs text-left">
+                                <thead class="bg-gray-100 font-bold text-gray-600">
+                                    <tr>
+                                        <th class="p-2">Nama</th>
+                                        <th class="p-2">Harga</th>
+                                        <th class="p-2 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y">
+                                    <tr>
+                                        <td class="p-2">Laptop Asus</td>
+                                        <td class="p-2">Rp 10jt</td>
+                                        <td class="p-2 text-center flex justify-center gap-1">
+                                            <button class="bg-gray-500 text-white px-2 py-1 rounded">Detail</button>
+                                            <button class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
+                                            <button class="bg-red-500 text-white px-2 py-1 rounded">Hapus</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2">Mouse</td>
+                                        <td class="p-2">Rp 150rb</td>
+                                        <td class="p-2 text-center flex justify-center gap-1">
+                                            <button class="bg-gray-500 text-white px-2 py-1 rounded">Detail</button>
+                                            <button class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
+                                            <button class="bg-red-500 text-white px-2 py-1 rounded">Hapus</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ilustrasi Form -->
+                <div class="space-y-2">
+                    <h3 class="font-bold text-sm text-gray-700">B. Halaman Form (Tambah/Edit)</h3>
+                    <div class="bg-gray-200 p-4 rounded-lg border border-gray-300 shadow-inner">
+                        <!-- Mockup Window -->
+                        <div class="bg-white rounded shadow-sm p-4">
+                            <div class="font-bold text-gray-700 mb-4 border-b pb-2">Form Produk</div>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-600 mb-1">Nama Produk</label>
+                                    <input type="text" class="w-full border p-1.5 text-xs rounded" placeholder="Contoh: Kopi">
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-600 mb-1">Harga</label>
+                                        <input type="text" class="w-full border p-1.5 text-xs rounded" placeholder="0">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-gray-600 mb-1">Stok</label>
+                                        <input type="text" class="w-full border p-1.5 text-xs rounded" placeholder="0">
+                                    </div>
+                                </div>
+                                <div class="pt-2 flex gap-2">
+                                    <button class="bg-blue-600 text-white text-xs px-4 py-2 rounded w-full">Simpan</button>
+                                    <button class="bg-gray-300 text-gray-700 text-xs px-4 py-2 rounded">Batal</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 2. MODEL SETUP -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="bg-gray-800 text-white w-8 h-8 rounded flex items-center justify-center text-sm">2</span>
+                Model Setup
+            </h2>
+            <div class="bg-white p-5 rounded border border-gray-200">
+                <p class="text-sm text-gray-600 mb-2">Pastikan file <code>app/Models/Produk.php</code> sudah mengizinkan input data massal.</p>
+                <div class="bg-gray-900 text-gray-100 p-3 rounded font-mono text-xs overflow-x-auto">
+<pre>
+<span class="text-purple-400">protected</span> <span class="text-blue-300">$fillable</span> = [
+    <span class="text-green-300">'nama'</span>, <span class="text-green-300">'harga'</span>, <span class="text-green-300">'stok'</span>, <span class="text-green-300">'deskripsi'</span>
+];
+</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. ROUTES -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="bg-gray-800 text-white w-8 h-8 rounded flex items-center justify-center text-sm">3</span>
+                Routes (Jalur Akses)
+            </h2>
+            <p class="text-sm text-gray-600 mb-2">Tambahkan di <code>routes/web.php</code>. Perhatikan urutan agar tidak error.</p>
+            <div class="bg-gray-900 text-gray-100 p-4 rounded-lg font-mono text-xs overflow-x-auto">
+<pre>
+<span class="text-purple-400">use</span> App\Http\Controllers\ProdukController;
+
+<span class="text-gray-500">// 1. Tampilkan Tabel & Detail</span>
+Route::<span class="text-blue-300">get</span>(<span class="text-green-300">'/produk'</span>, [ProdukController::<span class="text-purple-400">class</span>, <span class="text-green-300">'index'</span>]);
+Route::<span class="text-blue-300">get</span>(<span class="text-green-300">'/produk/{id}'</span>, [ProdukController::<span class="text-purple-400">class</span>, <span class="text-green-300">'show'</span>])->where(<span class="text-green-300">'id'</span>, <span class="text-green-300">'[0-9]+'</span>); 
+
+<span class="text-gray-500">// 2. Tambah Data (Create & Store)</span>
+Route::<span class="text-blue-300">get</span>(<span class="text-green-300">'/produk/create'</span>, [ProdukController::<span class="text-purple-400">class</span>, <span class="text-green-300">'create'</span>]);
+Route::<span class="text-blue-300">post</span>(<span class="text-green-300">'/produk'</span>, [ProdukController::<span class="text-purple-400">class</span>, <span class="text-green-300">'store'</span>]);
+
+<span class="text-gray-500">// 3. Edit Data (Edit & Update)</span>
+Route::<span class="text-blue-300">get</span>(<span class="text-green-300">'/produk/{id}/edit'</span>, [ProdukController::<span class="text-purple-400">class</span>, <span class="text-green-300">'edit'</span>]);
+Route::<span class="text-blue-300">put</span>(<span class="text-green-300">'/produk/{id}'</span>, [ProdukController::<span class="text-purple-400">class</span>, <span class="text-green-300">'update'</span>]);
+
+<span class="text-gray-500">// 4. Hapus Data (Destroy)</span>
+Route::<span class="text-blue-300">delete</span>(<span class="text-green-300">'/produk/{id}'</span>, [ProdukController::<span class="text-purple-400">class</span>, <span class="text-green-300">'destroy'</span>]);
+</pre>
+            </div>
+        </section>
+
+        <!-- 4. CONTROLLER -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="bg-gray-800 text-white w-8 h-8 rounded flex items-center justify-center text-sm">4</span>
+                Controller Logic
+            </h2>
+            <div class="bg-gray-900 text-gray-100 p-4 rounded-lg font-mono text-xs overflow-x-auto space-y-4">
+                
+                <!-- Create & Store -->
+                <div>
+                    <p class="text-green-400 font-bold mb-1">// --- CREATE (Tambah) ---</p>
+<pre>
+<span class="text-purple-400">public function</span> create() {
+    <span class="text-purple-400">return</span> view(<span class="text-green-300">'produk.create'</span>);
+}
+
+<span class="text-purple-400">public function</span> store(Request <span class="text-blue-300">$request</span>) {
+    <span class="text-blue-300">$request</span>->validate([
+        <span class="text-green-300">'nama'</span> => <span class="text-green-300">'required'</span>,
+        <span class="text-green-300">'harga'</span> => <span class="text-green-300">'required|numeric'</span>,
+        <span class="text-green-300">'stok'</span> => <span class="text-green-300">'required|integer'</span>
+    ]);
+
+    \App\Models\Produk::create(<span class="text-blue-300">$request</span>->all());
+    <span class="text-purple-400">return</span> redirect(<span class="text-green-300">'/produk'</span>)->with(<span class="text-green-300">'success'</span>, <span class="text-green-300">'Data Berhasil Disimpan'</span>);
+}
+</pre>
+                </div>
+
+                <!-- Edit & Update -->
+                <div class="pt-4 border-t border-gray-700">
+                    <p class="text-yellow-400 font-bold mb-1">// --- EDIT (Ubah) ---</p>
+<pre>
+<span class="text-purple-400">public function</span> edit(<span class="text-blue-300">$id</span>) {
+    <span class="text-blue-300">$produk</span> = \App\Models\Produk::find(<span class="text-blue-300">$id</span>);
+    <span class="text-purple-400">return</span> view(<span class="text-green-300">'produk.edit'</span>, compact(<span class="text-green-300">'produk'</span>));
+}
+
+<span class="text-purple-400">public function</span> update(Request <span class="text-blue-300">$request</span>, <span class="text-blue-300">$id</span>) {
+    <span class="text-blue-300">$produk</span> = \App\Models\Produk::find(<span class="text-blue-300">$id</span>);
+    <span class="text-blue-300">$produk</span>->update(<span class="text-blue-300">$request</span>->all());
+    <span class="text-purple-400">return</span> redirect(<span class="text-green-300">'/produk'</span>)->with(<span class="text-green-300">'success'</span>, <span class="text-green-300">'Data Berhasil Diupdate'</span>);
+}
+</pre>
+                </div>
+
+                <!-- Delete -->
+                <div class="pt-4 border-t border-gray-700">
+                    <p class="text-red-400 font-bold mb-1">// --- DELETE (Hapus) ---</p>
+<pre>
+<span class="text-purple-400">public function</span> destroy(<span class="text-blue-300">$id</span>) {
+    <span class="text-blue-300">$produk</span> = \App\Models\Produk::find(<span class="text-blue-300">$id</span>);
+    <span class="text-blue-300">$produk</span>->delete();
+    <span class="text-purple-400">return</span> redirect(<span class="text-green-300">'/produk'</span>)->with(<span class="text-green-300">'success'</span>, <span class="text-green-300">'Data Berhasil Dihapus'</span>);
+}
+</pre>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. VIEW (FORM SETUP) -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="bg-gray-800 text-white w-8 h-8 rounded flex items-center justify-center text-sm">5</span>
+                Setup View (Form)
+            </h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                
+                <!-- View Create -->
+                <div class="bg-white p-5 rounded border border-gray-200">
+                    <h3 class="font-bold text-gray-800 mb-2">File: <code>produk/create.blade.php</code></h3>
+                    <div class="bg-gray-100 p-3 rounded font-mono text-xs overflow-x-auto">
+<pre>
+&lt;form action="/produk" method="POST"&gt;
+    <span class="text-purple-600">@csrf</span>
+    &lt;input name="nama" placeholder="Nama Produk"&gt;
+    &lt;input name="harga" type="number"&gt;
+    &lt;button&gt;Simpan&lt;/button&gt;
+&lt;/form&gt;
+</pre>
+                    </div>
+                </div>
+
+                <!-- View Edit (Perhatikan Bedanya) -->
+                <div class="bg-white p-5 rounded border border-gray-200">
+                    <h3 class="font-bold text-gray-800 mb-2">File: <code>produk/edit.blade.php</code></h3>
+                    <div class="bg-gray-100 p-3 rounded font-mono text-xs overflow-x-auto">
+<pre>
+&lt;form action="/produk/{{ <span class="text-blue-600">$produk</span>->id }}" method="POST"&gt;
+    <span class="text-purple-600">@csrf</span>
+    <span class="text-purple-600">@method</span>(<span class="text-green-600">'PUT'</span>) <span class="text-gray-500">&lt;!-- Wajib untuk Edit --&gt;</span>
+    
+    &lt;!-- Isi value dengan data lama --&gt;
+    &lt;input name="nama" value="{{ <span class="text-blue-600">$produk</span>->nama }}"&gt;
+    &lt;input name="harga" value="{{ <span class="text-blue-600">$produk</span>->harga }}"&gt;
+    
+    &lt;button&gt;Update&lt;/button&gt;
+&lt;/form&gt;
+</pre>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>
