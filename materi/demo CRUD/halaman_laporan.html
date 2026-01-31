@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bonus: Fitur Laporan & Filter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-900 text-slate-200 font-sans antialiased">
+
+    <nav class="bg-indigo-900 border-b border-indigo-700 sticky top-0 z-50 px-6 py-4 flex justify-between items-center shadow-lg">
+        <div class="flex items-center gap-3">
+            <div class="bg-yellow-400 text-indigo-900 font-bold w-8 h-8 flex items-center justify-center rounded-full"><i class="fa-solid fa-star"></i></div>
+            <h1 class="font-bold text-lg text-white">Bonus Stage: Laporan & Filter</h1>
+        </div>
+        <span class="text-xs bg-indigo-800 text-indigo-200 border border-indigo-600 px-3 py-1 rounded-full font-bold">Advanced Logic</span>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-12 space-y-12">
+
+        <!-- Intro -->
+        <section class="text-center space-y-4">
+            <h2 class="text-3xl font-extrabold text-white">Analisa Data Gudang</h2>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+                Ini adalah materi pengayaan (Demo). Anda akan melihat bagaimana membuat halaman laporan lengkap dengan filter, perhitungan total, dan tampilan dashboard.
+            </p>
+        </section>
+
+        <!-- EXPECTED OUTPUT -->
+        <section class="bg-slate-800 rounded-2xl border border-slate-700 p-8 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 left-0 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-br-lg z-10">TARGET HASIL</div>
+            
+            <h3 class="font-bold text-xl mb-6 text-white flex items-center gap-2 pl-2">
+                <i class="fa-solid fa-chart-pie text-green-400"></i> Halaman Laporan Stok
+            </h3>
+
+            <!-- Mockup Browser Window -->
+            <div class="bg-gray-100 rounded-lg overflow-hidden font-sans border border-slate-600">
+                
+                <!-- Browser Bar -->
+                <div class="bg-gray-200 px-4 py-2 border-b border-gray-300 flex items-center gap-2">
+                    <div class="flex gap-1.5">
+                        <div class="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-green-400"></div>
+                    </div>
+                    <div class="bg-white px-3 py-0.5 text-[10px] rounded text-gray-500 flex-1 text-center font-mono">localhost:8000/laporan</div>
+                </div>
+
+                <!-- Admin Layout Mockup -->
+                <div class="flex h-[500px]">
+                    <!-- Sidebar Mockup -->
+                    <div class="w-48 bg-slate-800 text-white p-4 hidden sm:block border-r border-slate-700">
+                        <div class="font-bold text-sm mb-6 text-slate-200">GudangKu</div>
+                        <div class="space-y-1">
+                            <div class="text-[10px] text-slate-300 py-2 px-2 hover:bg-slate-700 rounded cursor-pointer transition">Kelola Produk</div>
+                            <div class="text-[10px] text-slate-300 py-2 px-2 hover:bg-slate-700 rounded cursor-pointer transition">Kategori</div>
+                            <!-- Active Menu -->
+                            <div class="text-[10px] bg-indigo-600 text-white py-2 px-2 rounded font-bold shadow">
+                                <i class="fa-solid fa-chart-simple mr-1"></i> Laporan
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Mockup (The Report) -->
+                    <div class="flex-1 p-6 overflow-y-auto bg-gray-50">
+                        
+                        <h2 class="text-xl font-bold text-slate-800 mb-4">Laporan Aset</h2>
+
+                        <!-- Filter Bar -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-6 flex flex-wrap gap-4 items-end">
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-700 mb-1">Kategori</label>
+                                <select class="border p-2 rounded text-xs w-32 bg-white text-gray-800 font-medium">
+                                    <option>Semua</option>
+                                    <option>Elektronik</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-700 mb-1">Max Stok</label>
+                                <input type="number" class="border p-2 rounded text-xs w-24 text-gray-800 font-medium" value="10">
+                            </div>
+                            <button class="bg-indigo-600 text-white px-3 py-2 rounded text-xs font-bold shadow hover:bg-indigo-700 transition">
+                                Filter
+                            </button>
+                        </div>
+
+                        <!-- Summary Cards -->
+                        <div class="grid grid-cols-3 gap-4 mb-6">
+                            <div class="bg-white border-l-4 border-blue-500 p-3 rounded shadow-sm">
+                                <p class="text-[10px] text-blue-700 font-bold uppercase">Total Item</p>
+                                <p class="text-xl font-bold text-slate-800">45</p>
+                            </div>
+                            <div class="bg-white border-l-4 border-green-500 p-3 rounded shadow-sm">
+                                <p class="text-[10px] text-green-700 font-bold uppercase">Nilai Aset</p>
+                                <p class="text-xl font-bold text-slate-800">150jt</p>
+                            </div>
+                            <div class="bg-white border-l-4 border-red-500 p-3 rounded shadow-sm">
+                                <p class="text-[10px] text-red-700 font-bold uppercase">Restock</p>
+                                <p class="text-xl font-bold text-slate-800">3</p>
+                            </div>
+                        </div>
+
+                        <!-- Table Result -->
+                        <div class="bg-white border rounded overflow-hidden shadow-sm">
+                            <table class="w-full text-xs text-left">
+                                <thead class="bg-gray-100 border-b">
+                                    <tr>
+                                        <th class="p-3 font-bold text-gray-600 uppercase text-[10px]">Produk</th>
+                                        <th class="p-3 font-bold text-gray-600 uppercase text-[10px]">Kategori</th>
+                                        <th class="p-3 font-bold text-gray-600 uppercase text-[10px] text-right">Harga</th>
+                                        <th class="p-3 font-bold text-gray-600 uppercase text-[10px] text-center">Stok</th>
+                                        <th class="p-3 font-bold text-gray-600 uppercase text-[10px] text-right">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y text-slate-700">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="p-3 font-semibold">Laptop ROG</td>
+                                        <td class="p-3"><span class="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-[10px] border border-gray-200">Elektronik</span></td>
+                                        <td class="p-3 text-right">15.000.000</td>
+                                        <td class="p-3 text-center font-bold">5</td>
+                                        <td class="p-3 text-right text-green-700 font-bold">75.000.000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 1: ROUTE SETUP -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 text-white">
+                <span class="bg-indigo-600 text-white w-8 h-8 rounded flex items-center justify-center text-sm">1</span>
+                Route Setup (web.php)
+            </h2>
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                <p class="text-sm text-slate-400 mb-4">
+                    Tambahkan route ini agar halaman laporan bisa diakses.
+                </p>
+                <div class="bg-black/50 p-4 rounded-lg font-mono text-xs overflow-x-auto text-green-300 border border-slate-600">
+<pre>
+use App\Http\Controllers\LaporanController;
+
+// Pastikan dilindungi auth jika aplikasi sudah ada login
+Route::middleware(['auth'])->group(function () {
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+});
+</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 2: CONTROLLER LOGIC -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 text-white">
+                <span class="bg-indigo-600 text-white w-8 h-8 rounded flex items-center justify-center text-sm">2</span>
+                Logic Laporan (Controller)
+            </h2>
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                <p class="text-sm text-slate-400 mb-4">
+                    File: <code>app/Http/Controllers/LaporanController.php</code> <br>
+                    Buat controller baru: <code>php artisan make:controller LaporanController</code>.
+                </p>
+
+                <div class="bg-black/50 p-4 rounded-lg font-mono text-xs overflow-x-auto text-green-300 border border-slate-600">
+<pre>
+<span class="text-purple-400">public function</span> index(Request <span class="text-blue-300">$request</span>)
+{
+    <span class="text-gray-500">// 1. Siapkan Query Builder (Belum dieksekusi)</span>
+    <span class="text-blue-300">$query</span> = \App\Models\Product::query();
+
+    <span class="text-gray-500">// 2. Filter Dinamis: Jika user memilih kategori</span>
+    <span class="text-purple-400">if</span> (<span class="text-blue-300">$request</span>->filled(<span class="text-green-300">'category_id'</span>)) {
+        <span class="text-blue-300">$query</span>->where(<span class="text-green-300">'category_id'</span>, <span class="text-blue-300">$request</span>->category_id);
+    }
+
+    <span class="text-gray-500">// 3. Filter Stok: Jika user input angka maksimal stok</span>
+    <span class="text-purple-400">if</span> (<span class="text-blue-300">$request</span>->filled(<span class="text-green-300">'stock_max'</span>)) {
+        <span class="text-blue-300">$query</span>->where(<span class="text-green-300">'stock'</span>, <span class="text-green-300">'<='</span>, <span class="text-blue-300">$request</span>->stock_max);
+    }
+
+    <span class="text-gray-500">// 4. Eksekusi Query (Get Data)</span>
+    <span class="text-blue-300">$products</span> = <span class="text-blue-300">$query</span>->get();
+
+    <span class="text-gray-500">// 5. Hitung Ringkasan (Aggregates Manual)</span>
+    <span class="text-gray-500">// Total Nilai Aset = Sum (Harga * Stok) tiap produk</span>
+    <span class="text-blue-300">$totalAset</span> = <span class="text-blue-300">$products</span>->sum(<span class="text-purple-400">function</span>(<span class="text-blue-300">$product</span>) {
+        <span class="text-purple-400">return</span> <span class="text-blue-300">$product</span>->price * <span class="text-blue-300">$product</span>->stock;
+    });
+
+    <span class="text-blue-300">$totalItem</span> = <span class="text-blue-300">$products</span>->sum(<span class="text-green-300">'stock'</span>);
+
+    <span class="text-gray-500">// 6. Ambil data kategori untuk dropdown filter</span>
+    <span class="text-blue-300">$categories</span> = \App\Models\Category::all();
+
+    <span class="text-purple-400">return</span> view(<span class="text-green-300">'laporan.index'</span>, compact(<span class="text-green-300">'products'</span>, <span class="text-green-300">'categories'</span>, <span class="text-green-300">'totalAset'</span>, <span class="text-green-300">'totalItem'</span>));
+}
+</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 3: FULL VIEW CODE -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 text-white">
+                <span class="bg-indigo-600 text-white w-8 h-8 rounded flex items-center justify-center text-sm">3</span>
+                Kode Lengkap View (Blade)
+            </h2>
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                <p class="text-sm text-slate-400 mb-4">
+                    File: <code>resources/views/laporan/index.blade.php</code> <br>
+                    Tampilan ini menggunakan Layout Admin dan Tailwind CSS.
+                </p>
+
+                <div class="bg-black/50 p-4 rounded-lg font-mono text-xs overflow-x-auto text-green-300 border border-slate-600">
+<pre>
+<span class="text-purple-400">@extends</span>(<span class="text-green-300">'layouts.admin'</span>)
+
+<span class="text-purple-400">@section</span>(<span class="text-green-300">'content'</span>)
+    
+    <span class="text-gray-500">&lt;!-- Judul --&gt;</span>
+    &lt;h2 class="text-xl font-bold text-slate-700 mb-4"&gt;Laporan Aset&lt;/h2&gt;
+
+    <span class="text-gray-500">&lt;!-- Form Filter --&gt;</span>
+    &lt;form action="/laporan" method="GET" class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-6 flex flex-wrap gap-4 items-end"&gt;
+        
+        &lt;div&gt;
+            &lt;label class="block text-xs font-bold text-gray-700 mb-1"&gt;Kategori&lt;/label&gt;
+            &lt;select name="category_id" class="border p-2 rounded text-sm w-40"&gt;
+                &lt;option value=""&gt;Semua Kategori&lt;/option&gt;
+                <span class="text-purple-400">@foreach</span>(<span class="text-blue-300">$categories</span> <span class="text-purple-400">as</span> <span class="text-blue-300">$cat</span>)
+                    &lt;option value="{{ <span class="text-blue-300">$cat</span>->id }}" {{ request(<span class="text-green-300">'category_id'</span>) == <span class="text-blue-300">$cat</span>->id ? <span class="text-green-300">'selected'</span> : <span class="text-green-300">''</span> }}&gt;
+                        {{ <span class="text-blue-300">$cat</span>->name }}
+                    &lt;/option&gt;
+                <span class="text-purple-400">@endforeach</span>
+            &lt;/select&gt;
+        &lt;/div&gt;
+
+        &lt;div&gt;
+            &lt;label class="block text-xs font-bold text-gray-700 mb-1"&gt;Stok Kurang Dari&lt;/label&gt;
+            &lt;input type="number" name="stock_max" class="border p-2 rounded text-sm w-32" 
+                   value="{{ request(<span class="text-green-300">'stock_max'</span>, 10) }}"&gt;
+        &lt;/div&gt;
+
+        &lt;button class="bg-indigo-600 text-white px-4 py-2 rounded text-sm font-bold shadow"&gt;Filter&lt;/button&gt;
+        &lt;a href="/laporan" class="bg-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-bold"&gt;Reset&lt;/a&gt;
+    &lt;/form&gt;
+
+    <span class="text-gray-500">&lt;!-- Summary Cards (Ringkasan) --&gt;</span>
+    &lt;div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6"&gt;
+        &lt;div class="bg-white border-l-4 border-blue-500 p-4 rounded shadow-sm"&gt;
+            &lt;p class="text-xs text-blue-600 font-bold uppercase"&gt;Total Item&lt;/p&gt;
+            &lt;p class="text-2xl font-bold text-gray-800"&gt;{{ number_format(<span class="text-blue-300">$totalItem</span>) }}&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="bg-white border-l-4 border-green-500 p-4 rounded shadow-sm"&gt;
+            &lt;p class="text-xs text-green-600 font-bold uppercase"&gt;Total Nilai Aset&lt;/p&gt;
+            &lt;p class="text-2xl font-bold text-gray-800"&gt;Rp {{ number_format(<span class="text-blue-300">$totalAset</span>) }}&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="bg-white border-l-4 border-red-500 p-4 rounded shadow-sm"&gt;
+            &lt;p class="text-xs text-red-600 font-bold uppercase"&gt;Produk Tampil&lt;/p&gt;
+            &lt;p class="text-2xl font-bold text-gray-800"&gt;{{ <span class="text-blue-300">$products</span>->count() }}&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    <span class="text-gray-500">&lt;!-- Tabel Hasil --&gt;</span>
+    &lt;div class="bg-white border rounded overflow-hidden shadow-sm"&gt;
+        &lt;table class="w-full text-sm text-left"&gt;
+            &lt;thead class="bg-gray-100 border-b"&gt;
+                &lt;tr&gt;
+                    &lt;th class="p-3"&gt;Produk&lt;/th&gt;
+                    &lt;th class="p-3"&gt;Kategori&lt;/th&gt;
+                    &lt;th class="p-3 text-right"&gt;Harga&lt;/th&gt;
+                    &lt;th class="p-3 text-center"&gt;Stok&lt;/th&gt;
+                    &lt;th class="p-3 text-right"&gt;Subtotal (Aset)&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody class="divide-y"&gt;
+                <span class="text-purple-400">@forelse</span>(<span class="text-blue-300">$products</span> <span class="text-purple-400">as</span> <span class="text-blue-300">$p</span>)
+                    &lt;tr class="hover:bg-gray-50"&gt;
+                        &lt;td class="p-3"&gt;{{ <span class="text-blue-300">$p</span>->name }}&lt;/td&gt;
+                        &lt;td class="p-3"&gt;
+                            &lt;span class="bg-gray-100 px-2 py-1 rounded text-xs"&gt;
+                                {{ <span class="text-blue-300">$p</span>->category->name ?? <span class="text-green-300">'Umum'</span> }}
+                            &lt;/span&gt;
+                        &lt;/td&gt;
+                        &lt;td class="p-3 text-right"&gt;{{ number_format(<span class="text-blue-300">$p</span>->price) }}&lt;/td&gt;
+                        &lt;td class="p-3 text-center font-bold {{ <span class="text-blue-300">$p</span>->stock < 5 ? <span class="text-green-300">'text-red-600'</span> : <span class="text-green-300">''</span> }}"&gt;
+                            {{ <span class="text-blue-300">$p</span>->stock }}
+                        &lt;/td&gt;
+                        &lt;td class="p-3 text-right font-bold text-green-700"&gt;
+                            <span class="text-gray-500">&lt;!-- Hitung Subtotal Langsung di View --&gt;</span>
+                            {{ number_format(<span class="text-blue-300">$p</span>->price * <span class="text-blue-300">$p</span>->stock) }}
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                <span class="text-purple-400">@empty</span>
+                    &lt;tr&gt;&lt;td colspan="5" class="text-center p-6 text-gray-500"&gt;Data tidak ditemukan.&lt;/td&gt;&lt;/tr&gt;
+                <span class="text-purple-400">@endforelse</span>
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+
+<span class="text-purple-400">@endsection</span>
+</pre>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesi 16: Final Project (Ujian Mandiri)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-900 text-slate-200 font-sans antialiased">
+
+    <!-- Header -->
+    <nav class="bg-slate-800 border-b border-slate-700 sticky top-0 z-50 px-6 py-4 flex justify-between items-center shadow-lg">
+        <div class="flex items-center gap-3">
+            <div class="bg-yellow-500 text-slate-900 font-bold w-8 h-8 flex items-center justify-center rounded-full">16</div>
+            <h1 class="font-bold text-lg text-white">Final Project: Graduation Day 🎓</h1>
+        </div>
+        <span class="text-xs bg-yellow-500/20 text-yellow-400 border border-yellow-500/50 px-3 py-1 rounded-full font-bold">Mandiri</span>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12 space-y-12">
+
+        <!-- Briefing -->
+        <section class="text-center space-y-4">
+            <h2 class="text-3xl font-extrabold text-white">Misi Terakhir: Manajemen Kategori</h2>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+                Klien senang dengan fitur Produk yang Anda buat. Sekarang, mereka meminta fitur tambahan untuk mengelola <strong>Kategori Barang</strong> (Elektronik, Pakaian, Makanan, dll).
+            </p>
+            <div class="inline-block bg-slate-800 p-4 rounded-xl border border-slate-700 mt-4">
+                <p class="text-sm font-mono text-yellow-400">
+                    <i class="fa-solid fa-triangle-exclamation mr-2"></i>
+                    Tantangan: Kerjakan fitur ini dengan melihat kode Produk sesedikit mungkin!
+                </p>
+            </div>
+        </section>
+
+        <!-- EXPECTED OUTPUT (NEW SECTION) -->
+        <section class="bg-slate-800 rounded-2xl border border-slate-700 p-8 shadow-2xl overflow-hidden relative group">
+            <div class="absolute top-0 right-0 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-bl-lg z-10">TARGET HASIL</div>
+            
+            <h3 class="font-bold text-xl mb-6 text-white flex items-center gap-2">
+                <i class="fa-solid fa-eye text-blue-400"></i> Target Tampilan
+            </h3>
+            <p class="text-slate-400 text-sm mb-6">
+                Fokuslah membuat fungsionalitas CRUD agar tampilan akhirnya terlihat seperti ini. Tidak perlu persis 100%, yang penting struktur datanya benar.
+            </p>
+
+            <!-- Mockup Browser -->
+            <div class="bg-gray-100 rounded-lg overflow-hidden shadow-inner font-sans border border-slate-600">
+                <!-- Browser Bar -->
+                <div class="bg-gray-200 px-4 py-2 border-b border-gray-300 flex items-center gap-2">
+                    <div class="flex gap-1.5">
+                        <div class="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-green-400"></div>
+                    </div>
+                    <div class="bg-white px-3 py-0.5 text-[10px] rounded text-gray-500 flex-1 text-center font-mono">localhost:8000/kategori</div>
+                </div>
+
+                <!-- Dashboard Layout Mockup -->
+                <div class="flex h-64">
+                    <!-- Sidebar Mockup -->
+                    <div class="w-40 bg-slate-800 text-white p-3 hidden sm:block">
+                        <div class="font-bold text-sm mb-4 text-slate-200">GudangKu</div>
+                        <div class="space-y-1">
+                            <div class="text-[10px] text-slate-400 py-1 px-2">Kelola Produk</div>
+                            <div class="text-[10px] bg-slate-700 text-white py-1 px-2 rounded font-bold border-l-2 border-blue-500">Kategori</div>
+                        </div>
+                    </div>
+
+                    <!-- Main Content Mockup -->
+                    <div class="flex-1 p-5 overflow-y-auto">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-bold text-slate-700">Daftar Kategori</h2>
+                            <button class="bg-blue-600 text-white text-[10px] px-3 py-1.5 rounded shadow font-bold">+ Tambah</button>
+                        </div>
+
+                        <!-- Table Mockup -->
+                        <div class="bg-white rounded border border-gray-200 shadow-sm overflow-hidden">
+                            <table class="w-full text-xs text-left">
+                                <thead class="bg-slate-50 text-slate-500 font-semibold border-b">
+                                    <tr>
+                                        <th class="p-2 w-10 text-center">#</th>
+                                        <th class="p-2">Nama Kategori</th>
+                                        <th class="p-2">Deskripsi</th>
+                                        <th class="p-2 text-center w-24">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-slate-600 divide-y">
+                                    <tr>
+                                        <td class="p-2 text-center">1</td>
+                                        <td class="p-2 font-bold text-slate-800">Elektronik</td>
+                                        <td class="p-2 text-slate-500">Barang gadget & komputer</td>
+                                        <td class="p-2 text-center space-x-1">
+                                            <button class="text-yellow-600 bg-yellow-50 border border-yellow-200 px-1.5 py-0.5 rounded">Edit</button>
+                                            <button class="text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded">Hapus</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2 text-center">2</td>
+                                        <td class="p-2 font-bold text-slate-800">Pakaian Pria</td>
+                                        <td class="p-2 text-slate-500">Kemeja, kaos, dan celana</td>
+                                        <td class="p-2 text-center space-x-1">
+                                            <button class="text-yellow-600 bg-yellow-50 border border-yellow-200 px-1.5 py-0.5 rounded">Edit</button>
+                                            <button class="text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded">Hapus</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Requirement Box -->
+        <section class="grid md:grid-cols-2 gap-8">
+            <!-- Spesifikasi -->
+            <div class="bg-white text-slate-800 p-6 rounded-2xl shadow-xl border-t-4 border-blue-600">
+                <h3 class="font-bold text-xl mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-blue-600"></i> Spesifikasi Teknis
+                </h3>
+                <ul class="space-y-3 text-sm">
+                    <li class="flex gap-3">
+                        <span class="font-bold text-blue-600">1. Database:</span>
+                        <span>Buat tabel <code>kategori</code> (id, nama, deskripsi).</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="font-bold text-blue-600">2. CRUD:</span>
+                        <span>Admin bisa Tambah, Lihat, Edit, dan Hapus kategori.</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="font-bold text-blue-600">3. Validasi:</span>
+                        <span>Nama kategori wajib diisi.</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="font-bold text-blue-600">4. Sidebar:</span>
+                        <span>Tambahkan menu "Kategori" di sidebar layout admin.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Cheat Sheet Alur -->
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl">
+                <h3 class="font-bold text-xl mb-4 text-white flex items-center gap-2">
+                    <i class="fa-solid fa-route text-green-400"></i> Peta Pengerjaan
+                </h3>
+                <div class="space-y-4 relative before:absolute before:left-3.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-600">
+                    
+                    <div class="relative pl-10">
+                        <div class="absolute left-2 top-1.5 w-3 h-3 bg-green-500 rounded-full border-2 border-slate-800"></div>
+                        <h4 class="text-white font-bold text-sm">Langkah 1: Database</h4>
+                        <p class="text-xs text-slate-400 mt-1">Make Model & Migration (-m). Isi kolom table.</p>
+                    </div>
+
+                    <div class="relative pl-10">
+                        <div class="absolute left-2 top-1.5 w-3 h-3 bg-green-500 rounded-full border-2 border-slate-800"></div>
+                        <h4 class="text-white font-bold text-sm">Langkah 2: Controller & Route</h4>
+                        <p class="text-xs text-slate-400 mt-1">Buat <code>KategoriController</code>. Copy logic Produk, sesuaikan nama variabelnya.</p>
+                    </div>
+
+                    <div class="relative pl-10">
+                        <div class="absolute left-2 top-1.5 w-3 h-3 bg-green-500 rounded-full border-2 border-slate-800"></div>
+                        <h4 class="text-white font-bold text-sm">Langkah 3: View (Tampilan)</h4>
+                        <p class="text-xs text-slate-400 mt-1">Buat folder <code>views/kategori</code>. Buat file index, create, edit.</p>
+                    </div>
+
+                    <div class="relative pl-10">
+                        <div class="absolute left-2 top-1.5 w-3 h-3 bg-yellow-500 rounded-full border-2 border-slate-800"></div>
+                        <h4 class="text-white font-bold text-sm">Langkah 4: Finishing</h4>
+                        <p class="text-xs text-slate-400 mt-1">Pasang menu di Sidebar. Test fitur tambah, edit, hapus.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Hint Section -->
+        <section>
+            <h3 class="text-xl font-bold text-white mb-6">Butuh Bantuan? (Cheat Sheet)</h3>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                
+                <!-- Hint 1: Command Line -->
+                <div class="bg-black/30 p-5 rounded-lg border border-slate-700">
+                    <h4 class="text-sm font-bold text-green-400 mb-2">Terminal Commands</h4>
+                    <div class="font-mono text-xs text-slate-300 space-y-2">
+                        <p class="bg-black/50 p-2 rounded">$ php artisan make:model Kategori -m</p>
+                        <p class="bg-black/50 p-2 rounded">$ php artisan make:controller KategoriController</p>
+                        <p class="bg-black/50 p-2 rounded">$ php artisan migrate</p>
+                    </div>
+                </div>
+
+                <!-- Hint 2: Route Pattern -->
+                <div class="bg-black/30 p-5 rounded-lg border border-slate-700">
+                    <h4 class="text-sm font-bold text-purple-400 mb-2">Pola Route (web.php)</h4>
+                    <div class="font-mono text-xs text-slate-300 space-y-2">
+                        <p>// Daftar Kategori</p>
+                        <p>Route::get('/kategori', [KategoriController::class, 'index']);</p>
+                        <p>// Tambah</p>
+                        <p>Route::get('/kategori/create', [KategoriController::class, 'create']);</p>
+                        <p>Route::post('/kategori', [KategoriController::class, 'store']);</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Bonus Challenge (Jika Siswa Cepat) -->
+        <section class="bg-gradient-to-r from-yellow-900/50 to-orange-900/50 border border-yellow-700/50 p-8 rounded-2xl text-center">
+            <h3 class="text-2xl font-bold text-yellow-400 mb-2">🔥 Bonus Stage: Integrasi Relasi</h3>
+            <p class="text-slate-300 text-sm max-w-xl mx-auto mb-6">
+                Jika fitur Kategori sudah selesai dan masih ada waktu, coba tantangan ini:
+            </p>
+            <div class="grid md:grid-cols-2 gap-4 text-left max-w-2xl mx-auto">
+                <div class="bg-black/40 p-4 rounded-lg border border-yellow-800/50">
+                    <h4 class="font-bold text-yellow-200 text-sm mb-1">1. Dropdown di Form Produk</h4>
+                    <p class="text-xs text-slate-400">
+                        Ubah input manual "Kategori" di form Tambah Produk menjadi <code>&lt;select&gt;</code> yang isinya mengambil data dari tabel Kategori.
+                    </p>
+                </div>
+                <div class="bg-black/40 p-4 rounded-lg border border-yellow-800/50">
+                    <h4 class="font-bold text-yellow-200 text-sm mb-1">2. Tampilkan Nama Kategori</h4>
+                    <p class="text-xs text-slate-400">
+                        Di tabel daftar produk, pastikan kolom kategori menampilkan Nama Kategori (misal: "Elektronik"), bukan angka ID.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Closing -->
+        <footer class="text-center pt-10 border-t border-slate-800">
+            <p class="text-slate-500 mb-2">Selamat! Anda telah menyelesaikan Bootcamp Laravel Dasar.</p>
+            <p class="text-slate-600 text-xs">Skill Anda sekarang: PHP Modern, Database Design, MVC Architecture, CRUD Logic.</p>
+        </footer>
+
+    </main>
+
+</body>
+</html>
