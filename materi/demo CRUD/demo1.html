@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesi 15: Admin UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+    <nav class="bg-slate-800 text-white sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+        <h1 class="font-bold text-lg">Sesi 15: Admin Dashboard & Data Table</h1>
+        <span class="text-xs bg-slate-700 px-2 py-1 rounded">UI Structure</span>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-10 space-y-12">
+
+        <!-- Konsep -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">1. Konsep: Struktur Halaman Admin</h2>
+            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-slate-500">
+                <p class="mb-2">Admin butuh tampilan data yang <strong>Padat & Informatif</strong>. Bukan kartu cantik, tapi <strong>TABEL</strong>.</p>
+                <p class="text-gray-600 text-sm">Kita akan mengubah tampilan <code>index.blade.php</code> yang tadinya Grid/Card menjadi Tabel Baris (Row) dengan kolom aksi lengkap.</p>
+            </div>
+        </section>
+
+        <!-- Step 0: Persiapan Data (Controller & Route) -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">2. Persiapan Data (Backend)</h2>
+            <p class="text-sm text-gray-600 mb-4">Sebelum membuat tampilan, pastikan data sudah dikirim dari Controller.</p>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Controller -->
+                <div class="bg-white p-5 rounded border border-gray-200">
+                    <h3 class="font-bold text-gray-800 mb-3 text-sm">A. Controller (ProdukController.php)</h3>
+                    <div class="bg-gray-800 text-gray-100 p-3 rounded font-mono text-xs overflow-x-auto">
+<pre>
+<span class="text-purple-400">public function</span> index()
+{
+    <span class="text-gray-500">// Ambil data produk terbaru</span>
+    <span class="text-blue-300">$produk</span> = \App\Models\Produk::latest()->get();
+
+    <span class="text-gray-500">// Kirim ke view 'produk.index'</span>
+    <span class="text-purple-400">return</span> view(<span class="text-green-300">'produk.index'</span>, compact(<span class="text-green-300">'produk'</span>));
+}
+</pre>
+                    </div>
+                </div>
+
+                <!-- Route -->
+                <div class="bg-white p-5 rounded border border-gray-200">
+                    <h3 class="font-bold text-gray-800 mb-3 text-sm">B. Route (web.php)</h3>
+                    <div class="bg-gray-800 text-gray-100 p-3 rounded font-mono text-xs overflow-x-auto">
+<pre>
+<span class="text-purple-400">use</span> App\Http\Controllers\ProdukController;
+
+Route::<span class="text-blue-300">get</span>(<span class="text-green-300">'/produk'</span>, [ProdukController::<span class="text-purple-400">class</span>, <span class="text-green-300">'index'</span>]);
+</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 1: Layouting -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">3. Persiapan Layout (Master)</h2>
+            <p class="text-sm text-gray-600 mb-2">Buat file <code>resources/views/layouts/admin.blade.php</code>. Ini agar Navbar/Sidebar tidak perlu dicopy-paste berulang kali.</p>
+            
+            <div class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-xs overflow-x-auto">
+<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="id"&gt;
+&lt;head&gt;
+    &lt;title&gt;Admin Panel&lt;/title&gt;
+    &lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body class="flex bg-gray-100"&gt;
+
+    <span class="text-gray-500">&lt;!-- SIDEBAR (Menu Kiri) --&gt;</span>
+    &lt;aside class="w-64 h-screen bg-slate-800 text-white p-6 fixed"&gt;
+        &lt;h1 class="text-xl font-bold mb-8"&gt;GudangKu&lt;/h1&gt;
+        &lt;nav class="space-y-2"&gt;
+            &lt;a href="/produk" class="block py-2 px-4 bg-slate-700 rounded transition"&gt;Kelola Produk&lt;/a&gt;
+            &lt;a href="#" class="block py-2 px-4 hover:bg-slate-700 rounded transition"&gt;Kategori&lt;/a&gt;
+            &lt;a href="#" class="block py-2 px-4 hover:bg-slate-700 rounded transition"&gt;Laporan&lt;/a&gt;
+        &lt;/nav&gt;
+    &lt;/aside&gt;
+
+    <span class="text-gray-500">&lt;!-- CONTENT WRAPPER (Isi Kanan) --&gt;</span>
+    &lt;div class="flex-1 ml-64 min-h-screen"&gt;
+        <span class="text-gray-500">&lt;!-- Navbar Atas (Opsional) --&gt;</span>
+        &lt;header class="bg-white shadow p-4 flex justify-end"&gt;
+            &lt;span class="text-sm text-gray-600"&gt;Halo, Admin&lt;/span&gt;
+        &lt;/header&gt;
+
+        <span class="text-gray-500">&lt;!-- Area Konten Utama --&gt;</span>
+        &lt;div class="p-8"&gt;
+            <span class="text-purple-400">@yield</span>(<span class="text-green-300">'content'</span>)
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+            </div>
+        </section>
+
+        <!-- Step 2: Table UI -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">4. Membuat Data Table (View)</h2>
+            <p class="text-sm text-gray-600 mb-2">Edit file <code>resources/views/produk/index.blade.php</code>. Kita ganti tampilan kartu menjadi tabel.</p>
+            
+            <div class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-xs overflow-x-auto">
+<pre>
+<span class="text-purple-400">@extends</span>(<span class="text-green-300">'layouts.admin'</span>)
+
+<span class="text-purple-400">@section</span>(<span class="text-green-300">'content'</span>)
+    
+    <span class="text-gray-500">&lt;!-- Header Halaman --&gt;</span>
+    &lt;div class="flex justify-between items-center mb-6"&gt;
+        &lt;h2 class="text-2xl font-bold text-slate-800"&gt;Daftar Produk&lt;/h2&gt;
+        
+        <span class="text-gray-500">&lt;!-- Tombol Tambah --&gt;</span>
+        &lt;a href="/produk/create" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition"&gt;
+            + Tambah Produk
+        &lt;/a&gt;
+    &lt;/div&gt;
+
+    <span class="text-gray-500">&lt;!-- Tabel Data --&gt;</span>
+    &lt;div class="bg-white rounded-lg shadow overflow-hidden"&gt;
+        &lt;table class="min-w-full"&gt;
+            &lt;thead class="bg-slate-50 border-b"&gt;
+                &lt;tr&gt;
+                    &lt;th class="px-6 py-3 text-left text-sm font-bold text-slate-500 uppercase"&gt;Nama Produk&lt;/th&gt;
+                    &lt;th class="px-6 py-3 text-left text-sm font-bold text-slate-500 uppercase"&gt;Harga&lt;/th&gt;
+                    &lt;th class="px-6 py-3 text-left text-sm font-bold text-slate-500 uppercase"&gt;Stok&lt;/th&gt;
+                    &lt;th class="px-6 py-3 text-center text-sm font-bold text-slate-500 uppercase"&gt;Aksi&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody class="divide-y divide-gray-200"&gt;
+                <span class="text-purple-400">@forelse</span>(<span class="text-blue-300">$produk</span> <span class="text-purple-400">as</span> <span class="text-blue-300">$item</span>)
+                    &lt;tr class="hover:bg-slate-50 transition"&gt;
+                        &lt;td class="px-6 py-4 text-slate-700"&gt;{{ <span class="text-blue-300">$item</span>->name }}&lt;/td&gt;
+                        &lt;td class="px-6 py-4 text-slate-700"&gt;Rp {{ number_format(<span class="text-blue-300">$item</span>->price) }}&lt;/td&gt;
+                        &lt;td class="px-6 py-4"&gt;
+                            <span class="text-purple-400">@if</span>(<span class="text-blue-300">$item</span>->stock < 5)
+                                &lt;span class="bg-red-100 text-red-700 text-xs px-2 py-1 rounded font-bold"&gt;{{ <span class="text-blue-300">$item</span>->stock }} (Menipis)&lt;/span&gt;
+                            <span class="text-purple-400">@else</span>
+                                &lt;span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded font-bold"&gt;{{ <span class="text-blue-300">$item</span>->stock }}&lt;/span&gt;
+                            <span class="text-purple-400">@endif</span>
+                        &lt;/td&gt;
+                        
+                        <span class="text-gray-500">&lt;!-- Kolom Aksi --&gt;</span>
+                        &lt;td class="px-6 py-4 text-center space-x-2"&gt;
+                            
+                            <span class="text-gray-500">&lt;!-- Tombol Edit --&gt;</span>
+                            &lt;a href="/produk/{{ <span class="text-blue-300">$item</span>->id }}/edit" 
+                               class="text-yellow-600 border border-yellow-300 px-3 py-1 rounded hover:bg-yellow-50 text-sm transition"&gt;
+                                Edit
+                            &lt;/a&gt;
+
+                            <span class="text-gray-500">&lt;!-- Tombol Hapus (Wajib pakai Form agar aman) --&gt;</span>
+                            &lt;form action="/produk/{{ <span class="text-blue-300">$item</span>->id }}" method="POST" class="inline" 
+                                  onsubmit="return confirm('Yakin ingin menghapus data ini?')"&gt;
+                                <span class="text-purple-400">@csrf</span>
+                                <span class="text-purple-400">@method</span>(<span class="text-green-300">'DELETE'</span>)
+                                &lt;button class="text-red-600 border border-red-300 px-3 py-1 rounded hover:bg-red-50 text-sm transition"&gt;
+                                    Hapus
+                                &lt;/button&gt;
+                            &lt;/form&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                <span class="text-purple-400">@empty</span>
+                    &lt;tr&gt;
+                        &lt;td colspan="4" class="text-center p-6 text-gray-500"&gt;
+                            Belum ada data produk. Silakan tambah data baru.
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                <span class="text-purple-400">@endforelse</span>
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+
+<span class="text-purple-400">@endsection</span>
+</pre>
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>
